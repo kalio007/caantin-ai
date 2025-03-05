@@ -1,30 +1,48 @@
 import React, { useState } from "react";
 import { useSidebarContext } from "@/hooks/use-sidebar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 export const GreetingForm: React.FC = () => {
-  const [greeting, setGreeting] = useState("");
-  const { activeForm } = useSidebarContext();
+  const [message, setMessage] = useState("");
+  const { addGreetingNode } = useSidebarContext();
+
+  const handleSave = () => {
+    // Create greeting node data
+    const greetingNodeData = {
+      message: message,
+    };
+
+    // Add the greeting node using the new context method
+    addGreetingNode({ data: greetingNodeData });
+
+    // Optionally log the node data
+    console.log("Creating Greeting Node:", greetingNodeData);
+
+    // Reset the message
+    setMessage("");
+  };
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-lg">
-      <h3 className="text-lg font-semibold mb-4">Greeting Node</h3>
-      <textarea
-        value={greeting}
-        onChange={(e) => setGreeting(e.target.value)}
-        placeholder="Enter your greeting..."
-        className="w-full h-32 p-2 border rounded-md"
-      />
-      <div className="mt-4 flex justify-end">
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-          onClick={() => {
-            // Add your save/submit logic here
-            console.log("Greeting saved:", greeting);
-          }}
-        >
-          Save Greeting
-        </button>
-      </div>
-    </div>
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle>Greeting Node</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="grid w-full gap-4">
+          <Textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Enter your greeting message..."
+          />
+          <Button onClick={handleSave} disabled={!message.trim()}>
+            Create Greeting Node
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
+
+export default GreetingForm;
