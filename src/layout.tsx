@@ -16,7 +16,6 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     <ResizablePanelGroup direction="horizontal" className="h-screen">
       <ResizablePanel defaultSize={20}>
         <AppSidebar />
-        <GreetingForm />
       </ResizablePanel>
       <ResizableHandle />
       <ResizablePanel defaultSize={80} className="h-full">

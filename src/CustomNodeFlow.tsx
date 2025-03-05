@@ -11,6 +11,7 @@ import {
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
+import { useSidebarContext } from "@/hooks/use-sidebar";
 
 import ColorSelectorNode from "./components/ColorSelectorNode";
 
@@ -27,8 +28,11 @@ const CustomNodeFlow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [bgColor, setBgColor] = useState(initBgColor);
+  //from the gettingnode
+  const { greetingNodes } = useSidebarContext();
 
   useEffect(() => {
+    console.log("Greeting Nodes from Context:", greetingNodes);
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setNodes((nds) =>
         nds.map((node) => {
@@ -55,7 +59,9 @@ const CustomNodeFlow = () => {
       {
         id: "1",
         type: "input",
-        data: { label: "An input node" },
+        data: {
+          label: greetingNodes.length > 0 ? greetingNodes[0] : "An input node",
+        },
         position: { x: 0, y: 50 },
         sourcePosition: Position.Right,
       },
@@ -103,7 +109,7 @@ const CustomNodeFlow = () => {
         animated: true,
       },
     ]);
-  }, []);
+  }, [greetingNodes]);
 
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge({ ...params, animated: true }, eds)),

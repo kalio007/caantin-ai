@@ -1,48 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSidebarContext } from "@/hooks/use-sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
-export const GreetingForm: React.FC = () => {
+export const GreetingForm: React.FC<{}> = () => {
+  const { greetingNodes, setGreetingNodes } = useSidebarContext();
   const [message, setMessage] = useState("");
-  const { addGreetingNode } = useSidebarContext();
 
   const handleSave = () => {
-    // Create greeting node data
-    const greetingNodeData = {
-      message: message,
-    };
+    if (message.trim()) {
+      // Save the message to the context, in an event we want mulitple question nodes array 
+      //   setGreetingNodes([...greetingNodes, message]);
 
-    // Add the greeting node using the new context method
-    addGreetingNode({ data: greetingNodeData });
-
-    // Optionally log the node data
-    console.log("Creating Greeting Node:", greetingNodeData);
-
-    // Reset the message
-    setMessage("");
+      //for single array 
+      setGreetingNodes([message]);
+      setMessage("");
+    }
   };
+  //TODO: handle when selected and the message is passed back to the form 
+
+  console.log("Message passed into getQuestionNode:", message);
 
   return (
-    <Card className="w-full">
+    <Card>
       <CardHeader>
         <CardTitle>Greeting Node</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid w-full gap-4">
-          <Textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Enter your greeting message..."
-          />
-          <Button onClick={handleSave} disabled={!message.trim()}>
-            Create Greeting Node
-          </Button>
-        </div>
+        <Textarea
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Enter greeting message..."
+        />
+        <Button onClick={handleSave} className="mt-2">
+          Save
+        </Button>
       </CardContent>
     </Card>
   );
 };
-
-export default GreetingForm;
