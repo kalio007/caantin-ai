@@ -25,14 +25,16 @@ const nodeTypes = {
 const defaultViewport = { x: 0, y: 0, zoom: 1.5 };
 
 const CustomNodeFlow = () => {
+  //from the gettingnode
+  const { greetingNodes } = useSidebarContext();
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [bgColor, setBgColor] = useState(initBgColor);
-  //from the gettingnode
-  const { greetingNodes } = useSidebarContext();
 
   useEffect(() => {
     console.log("Greeting Nodes from Context:", greetingNodes);
+
+    // const lastMessage = greetingNodes[greetingNodes.length - 1].data?.message;
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setNodes((nds) =>
         nds.map((node) => {
@@ -54,17 +56,29 @@ const CustomNodeFlow = () => {
         })
       );
     };
+    // Dynamically create nodes based on questionNodes
+    const greetingNodeElements = greetingNodes.map((qNode, index) => ({
+      id: qNode.id, // Use the unique id from the question node
+      type: qNode.type, // Set type from the question node (could be different types)
+      data: { label: qNode.data?.message }, // Use the message from question node as label
+      position: { x: 0, y: 50 * (index + 1) }, // Adjust positioning dynamically
+      sourcePosition: Position.Right,
+    }));
 
     setNodes([
-      {
-        id: "1",
-        type: "input",
-        data: {
-          label: greetingNodes.length > 0 ? greetingNodes[0] : "An input node",
-        },
-        position: { x: 0, y: 50 },
-        sourcePosition: Position.Right,
-      },
+      ...greetingNodeElements,
+      // {
+      //   id: "1",
+      //   type: "input",
+      //   data: {
+      //     label:
+      //       greetingNodes.length > 0
+      //         ? greetingNodes[greetingNodes.length - 1]?.data?.message
+      //         : "An input node",
+      //   },
+      //   position: { x: 0, y: 50 },
+      //   sourcePosition: Position.Right,
+      // },
       {
         id: "2",
         type: "selectorNode",
