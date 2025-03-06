@@ -31,7 +31,7 @@ const defaultViewport = { x: 0, y: 0, zoom: 1.5 };
 
 const CustomNodeFlow = () => {
   //from the gettingnode
-  const { greetingNodes } = useSidebarContext();
+  const { createNodes } = useSidebarContext();
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [bgColor, setBgColor] = useState(initBgColor);
@@ -130,58 +130,94 @@ const CustomNodeFlow = () => {
   //   ]);
   // }, [greetingNodes]);
 
+  // useEffect(() => {
+  //   setNodes(
+  //     greetingNodes.map((node, index) => ({
+  //       id: node.id,
+  //       type: node.type === "question" ? "questionNode" : "input",
+  //       data:
+  //         node.type === "question"
+  //           ? { label: node.data?.question, options: node.data?.options }
+  //           : { label: node.data?.message },
+  //       position: { x: index * 250, y: 50 },
+  //       sourcePosition:
+  //         node.type === "question"
+  //           ? Position.Bottom
+  //           : node.type === "information"
+  //           ? Position.Left
+  //           : Position.Right,
+  //     }))
+  //   );
+  //   setEdges([
+  //     {
+  //       id: "e1-2",
+  //       source: "1",
+  //       target: "2",
+  //       animated: true,
+  //     },
+  //     {
+  //       id: "e2a-3",
+  //       source: "2",
+  //       target: "3",
+  //       sourceHandle: "b",
+  //       animated: true,
+  //     },
+  //     {
+  //       id: "e2b-4",
+  //       source: "2",
+  //       target: "4",
+  //       sourceHandle: "a",
+  //       animated: true,
+  //     },
+  //   ]);
+  //   // setEdges((eds) =>
+  //   //   eds.map((edge) => {
+  //   //     if (edge.id === "e1-2") {
+  //   //       return {
+  //   //         ...edge,
+  //   //       };
+  //   //     }
+
+  //   //     return edge;
+  //   //   })
+  //   // );
+  // }, [greetingNodes]);
   useEffect(() => {
     setNodes(
-      greetingNodes.map((node, index) => ({
+      createNodes.map((node, index) => ({
         id: node.id,
-        type: node.type === "question" ? "questionNode" : "input",
+        type: node.type || "input", // Ensure type is never null
         data:
           node.type === "question"
             ? { label: node.data?.question, options: node.data?.options }
             : { label: node.data?.message },
         position: { x: index * 250, y: 50 },
         sourcePosition:
+          node.type === "greeting"
+            ? Position.Right
+            : node.type === "question"
+            ? Position.Left
+            : undefined,
+        targetPosition:
           node.type === "question"
-            ? Position.Bottom
+            ? Position.Right
             : node.type === "information"
             ? Position.Left
-            : Position.Right,
+            : undefined,
       }))
     );
-    setEdges([
-      {
-        id: "e1-2",
-        source: "1",
-        target: "2",
-        animated: true,
-      },
-      {
-        id: "e2a-3",
-        source: "2",
-        target: "3",
-        sourceHandle: "b",
-        animated: true,
-      },
-      {
-        id: "e2b-4",
-        source: "2",
-        target: "4",
-        sourceHandle: "a",
-        animated: true,
-      },
-    ]);
-    // setEdges((eds) =>
-    //   eds.map((edge) => {
-    //     if (edge.id === "e1-2") {
-    //       return {
-    //         ...edge,
-    //       };
-    //     }
 
-    //     return edge;
-    //   })
-    // );
-  }, [greetingNodes]);
+    // Automatically create edges by linking each node to the next
+    setEdges(
+      createNodes.slice(0, -1).map((node, index) => ({
+        id: `e${node.id}-${createNodes[index + 1].id}`,
+        source: node.id,
+        target: createNodes[index + 1].id,
+        animated: true,
+      }))
+    );
+  }, [createNodes]);
+
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge({ ...params, animated: true }, eds)),
     []

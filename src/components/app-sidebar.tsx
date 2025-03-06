@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useSidebarContext } from "@/hooks/use-sidebar";
-import { GreetingForm } from "@/components/nodes/greeting";
+import { GreetingForm } from "@/components/nodes/create-node";
 // import { QuestionForm } from "@/components/nodes/question";
 // import { InformationForm } from "@/components/nodes/information";
 import { cn } from "@/lib/utils";

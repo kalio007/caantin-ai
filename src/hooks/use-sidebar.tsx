@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext, ReactNode } from "react";
 
 // Define the types for our context
 export type SidebarFormType = "greeting" | "question" | "information" | null;
-export interface GreetingNode {
+export interface CreateNode {
   id: string;
   type: SidebarFormType;
   data: {
@@ -15,30 +15,30 @@ export interface GreetingNode {
 interface SidebarContextType {
   activeForm: SidebarFormType;
   setActiveForm: (form: SidebarFormType) => void;
-  greetingNodes: GreetingNode[];
-  setGreetingNodes: (nodes: GreetingNode[]) => void;
+  createNodes: CreateNode[];
+  setCreateNodes: (nodes: CreateNode[]) => void;
 }
 
 const SidebarContext = createContext<SidebarContextType>({
   activeForm: null,
   setActiveForm: () => {},
-  greetingNodes: [],
-  setGreetingNodes: () => {},
+  createNodes: [],
+  setCreateNodes: () => {},
 });
 
 export const SidebarProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [activeForm, setActiveForm] = useState<SidebarFormType>(null);
-  const [greetingNodes, setGreetingNodes] = useState<GreetingNode[]>([]);
+  const [createNodes, setCreateNodes] = useState<CreateNode[]>([]);
 
   return (
     <SidebarContext.Provider
       value={{
         activeForm,
         setActiveForm,
-        greetingNodes,
-        setGreetingNodes,
+        createNodes,
+        setCreateNodes,
       }}
     >
       {children}
