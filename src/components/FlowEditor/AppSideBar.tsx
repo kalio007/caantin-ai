@@ -1,5 +1,5 @@
 import React from "react";
-import { CreateNode } from "@/components/nodes/create-node";
+import { CreateNode } from "@/components/nodes/CreateNode";
 
 export function AppSidebar() {
   return (

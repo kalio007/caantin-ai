@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import type { Node, Edge, NodeMouseHandler } from "@xyflow/react";
-import { ZoomSlider } from "@/components/FlowEditor/zoom-slider";
+import { ZoomSlider } from "@/components/FlowEditor/ZoomSlider";
 import {
   ReactFlow,
   useNodesState,

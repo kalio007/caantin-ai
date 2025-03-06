@@ -2,7 +2,7 @@ import React from "react";
 import { Layout } from "./layout";
 import CustomNodeFlow from "./components/CustomNodeFlow";
 import { SidebarProvider } from "./hooks/use-sidebar";
-import { ModeToggle } from "./components/Theme/mode-toggle";
+import { ModeToggle } from "./components/Theme/ModeToggle";
 
 function App() {
   return (
