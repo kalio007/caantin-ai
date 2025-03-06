@@ -6,7 +6,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { AppSidebar } from "./components/FlowEditor/AppSideBar";
+import { AppSidebar } from "./components/SidePanel/AppSideBar";
 
 interface LayoutProps {
   children: React.ReactNode;
