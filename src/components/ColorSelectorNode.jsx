@@ -1,3 +1,4 @@
+//src/components/ColorSelectorNode.jsx
 import React, { memo } from "react";
 import { Handle, Position } from "@xyflow/react";
 

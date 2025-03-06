@@ -12,11 +12,23 @@ export interface CreateNode {
   };
 }
 
+interface NodeData {
+  question?: string;
+  message?: string;
+  options?: string[];
+}
+interface Node {
+  id: string;
+  type: string;
+  data?: NodeData;
+}
+
 interface SidebarContextType {
   activeForm: SidebarFormType;
   setActiveForm: (form: SidebarFormType) => void;
   createNodes: CreateNode[];
   setCreateNodes: (nodes: CreateNode[]) => void;
+  updateNode: (updatedNode: CreateNode) => void;
 }
 
 const SidebarContext = createContext<SidebarContextType>({
@@ -24,6 +36,7 @@ const SidebarContext = createContext<SidebarContextType>({
   setActiveForm: () => {},
   createNodes: [],
   setCreateNodes: () => {},
+  updateNode: () => {},
 });
 
 export const SidebarProvider: React.FC<{ children: ReactNode }> = ({
@@ -32,6 +45,13 @@ export const SidebarProvider: React.FC<{ children: ReactNode }> = ({
   const [activeForm, setActiveForm] = useState<SidebarFormType>(null);
   const [createNodes, setCreateNodes] = useState<CreateNode[]>([]);
 
+  // Function to update a specific node
+  const updateNode = (updatedNode: CreateNode) => {
+    setCreateNodes((prevNodes) =>
+      prevNodes.map((node) => (node.id === updatedNode.id ? updatedNode : node))
+    );
+  };
+
   return (
     <SidebarContext.Provider
       value={{
@@ -39,6 +59,7 @@ export const SidebarProvider: React.FC<{ children: ReactNode }> = ({
         setActiveForm,
         createNodes,
         setCreateNodes,
+        updateNode,
       }}
     >
       {children}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import type { Node, Edge } from "@xyflow/react";
+import type { Node, Edge, NodeMouseHandler } from "@xyflow/react";
 import { ZoomSlider } from "@/components/zoom-slider";
 import {
   ReactFlow,
@@ -16,24 +16,27 @@ import "@xyflow/react/dist/style.css";
 import { useSidebarContext } from "@/hooks/use-sidebar";
 
 import ColorSelectorNode from "@/components/ColorSelectorNode";
-import { ModeToggle } from "./mode-toggle";
+import NodePreviewDrawer from "@/components/NodePreview";
 
 const initBgColor = "#c9f1dd";
 
 const snapGrid: [number, number] = [20, 20];
 const nodeTypes = {
   selectorNode: ColorSelectorNode,
-  // informationNode: InformationBaseNode,
 };
 
 const defaultViewport = { x: 0, y: 0, zoom: 1.5 };
 
 const CustomNodeFlow = () => {
-  //from the gettingnode
-  const { createNodes } = useSidebarContext();
+  // from the sidebar context
+  const { createNodes, updateNode } = useSidebarContext();
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [bgColor, setBgColor] = useState(initBgColor);
+
+  // State for drawer
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [selectedNode, setSelectedNode] = useState<Node | null>(null);
 
   useEffect(() => {
     setNodes(
@@ -76,6 +79,34 @@ const CustomNodeFlow = () => {
     []
   );
 
+  // Handler for node click
+  const onNodeClick: NodeMouseHandler = useCallback(
+    (event, node) => {
+      // Find the original node data from createNodes
+      const originalNode = createNodes.find((n) => n.id === node.id);
+      if (originalNode) {
+        setSelectedNode({ ...node, originalData: originalNode });
+        setIsDrawerOpen(true);
+      }
+    },
+    [createNodes]
+  );
+
+  // Handler for saving edited node
+  const handleSaveNode = useCallback(
+    (updatedNode) => {
+      if (updateNode && selectedNode) {
+        // Update in the context (assuming updateNode is provided by the context)
+        updateNode(updatedNode);
+
+        // Close the drawer
+        setIsDrawerOpen(false);
+        setSelectedNode(null);
+      }
+    },
+    [selectedNode, updateNode]
+  );
+
   return (
     <div className="w-full h-full">
       <ReactFlow
@@ -84,6 +115,7 @@ const CustomNodeFlow = () => {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onNodeClick={onNodeClick}
         style={{ background: bgColor }}
         nodeTypes={nodeTypes}
         snapToGrid={true}
@@ -107,6 +139,13 @@ const CustomNodeFlow = () => {
         <Background />
         <ZoomSlider position="top-left" />
       </ReactFlow>
+
+      <NodePreviewDrawer
+        isOpen={isDrawerOpen}
+        setIsOpen={setIsDrawerOpen}
+        node={selectedNode}
+        onSave={handleSaveNode}
+      />
     </div>
   );
 };
