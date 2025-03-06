@@ -1,13 +1,13 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
 // Define the types for our context
-type SidebarFormType = "greeting" | "question" | "information" | null;
-interface GreetingNode {
+export type SidebarFormType = "greeting" | "question" | "information" | null;
+export interface GreetingNode {
   id: string;
   type: SidebarFormType;
   data: {
-    message?: string; 
-    question?: string; 
+    message?: string;
+    question?: string;
     options?: string[];
   };
 }
@@ -15,8 +15,8 @@ interface GreetingNode {
 interface SidebarContextType {
   activeForm: SidebarFormType;
   setActiveForm: (form: SidebarFormType) => void;
-  greetingNodes: string[];
-  setGreetingNodes: (nodes: string[]) => void;
+  greetingNodes: GreetingNode[];
+  setGreetingNodes: (nodes: GreetingNode[]) => void;
 }
 
 const SidebarContext = createContext<SidebarContextType>({

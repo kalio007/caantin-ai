@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import type { Node, Edge } from "@xyflow/react";
 import { ZoomSlider } from "@/components/zoom-slider";
-import InformationBaseNode from "./components/nodes/information-node";
+// import InformationBaseNode from "./components/nodes/information-node";
 import {
   ReactFlow,
   useNodesState,
@@ -16,14 +16,15 @@ import {
 import "@xyflow/react/dist/style.css";
 import { useSidebarContext } from "@/hooks/use-sidebar";
 
-import ColorSelectorNode from "./components/ColorSelectorNode";
+import ColorSelectorNode from "@/components/ColorSelectorNode";
+import { ModeToggle } from "./components/mode-toggle";
 
 const initBgColor = "#c9f1dd";
 
 const snapGrid: [number, number] = [20, 20];
 const nodeTypes = {
   selectorNode: ColorSelectorNode,
-  informationNode: InformationBaseNode,
+  // informationNode: InformationBaseNode,
 };
 
 const defaultViewport = { x: 0, y: 0, zoom: 1.5 };
@@ -140,9 +141,46 @@ const CustomNodeFlow = () => {
             : { label: node.data?.message },
         position: { x: index * 250, y: 50 },
         sourcePosition:
-          node.type === "question" ? Position.Bottom : Position.Right,
+          node.type === "question"
+            ? Position.Bottom
+            : node.type === "information"
+            ? Position.Left
+            : Position.Right,
       }))
     );
+    setEdges([
+      {
+        id: "e1-2",
+        source: "1",
+        target: "2",
+        animated: true,
+      },
+      {
+        id: "e2a-3",
+        source: "2",
+        target: "3",
+        sourceHandle: "b",
+        animated: true,
+      },
+      {
+        id: "e2b-4",
+        source: "2",
+        target: "4",
+        sourceHandle: "a",
+        animated: true,
+      },
+    ]);
+    // setEdges((eds) =>
+    //   eds.map((edge) => {
+    //     if (edge.id === "e1-2") {
+    //       return {
+    //         ...edge,
+    //       };
+    //     }
+
+    //     return edge;
+    //   })
+    // );
   }, [greetingNodes]);
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge({ ...params, animated: true }, eds)),
@@ -151,8 +189,6 @@ const CustomNodeFlow = () => {
 
   return (
     <div className="w-full h-full">
-      {" "}
-      {/* Added explicit height */}
       <ReactFlow
         nodes={nodes}
         edges={edges}

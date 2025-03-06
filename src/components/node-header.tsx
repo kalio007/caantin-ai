@@ -1,10 +1,11 @@
 import { forwardRef, useCallback, HTMLAttributes, ReactNode } from "react";
 import { useNodeId, useReactFlow } from "@xyflow/react";
 import { EllipsisVertical, Trash } from "lucide-react";
+import { type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 import { Slot } from "@radix-ui/react-slot";
-import { Button, ButtonProps } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -29,11 +30,11 @@ export const NodeHeader = forwardRef<HTMLElement, NodeHeaderProps>(
           "flex items-center justify-between gap-2 px-3 py-2",
           // Remove or modify these classes if you modify the padding in the
           // `<BaseNode />` component.
-          className,
+          className
         )}
       />
     );
-  },
+  }
 );
 
 NodeHeader.displayName = "NodeHeader";
@@ -74,7 +75,7 @@ export const NodeHeaderIcon = forwardRef<HTMLSpanElement, NodeHeaderIconProps>(
     return (
       <span ref={ref} {...props} className={cn(className, "[&>*]:size-5")} />
     );
-  },
+  }
 );
 
 NodeHeaderIcon.displayName = "NodeHeaderIcon";
@@ -96,7 +97,7 @@ export const NodeHeaderActions = forwardRef<
       {...props}
       className={cn(
         "ml-auto flex items-center gap-1 justify-self-end",
-        className,
+        className
       )}
     />
   );
@@ -106,9 +107,10 @@ NodeHeaderActions.displayName = "NodeHeaderActions";
 
 /* NODE HEADER ACTION ------------------------------------------------------- */
 
-export type NodeHeaderActionProps = ButtonProps & {
-  label: string;
-};
+export type NodeHeaderActionProps = React.ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants> & {
+    label: string;
+  };
 
 /**
  * A thin wrapper around the `<Button />` component with a fixed sized suitable

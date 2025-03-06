@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSidebarContext } from "@/hooks/use-sidebar";
+import { useSidebarContext, type SidebarFormType } from "@/hooks/use-sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -42,12 +42,10 @@ export const GreetingForm: React.FC<{}> = () => {
   };
   //TODO: handle when selected and the message is passed back to the form
 
-  console.log("Message passed into getQuestionNode:", message);
-
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Greeting Node</CardTitle>
+        <CardTitle>Create a Node</CardTitle>
       </CardHeader>
       <CardContent>
         {/* Show message input for Greeting and Information nodes */}
@@ -83,6 +81,7 @@ export const GreetingForm: React.FC<{}> = () => {
           value={nodeType}
           onChange={(e) => setNodeType(e.target.value)}
           className="mt-2 w-full"
+          aria-label="Select node type"
         >
           <option value="none">None</option>
           <option value="greeting">Greeting</option>
