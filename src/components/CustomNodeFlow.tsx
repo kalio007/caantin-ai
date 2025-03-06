@@ -16,7 +16,7 @@ import "@xyflow/react/dist/style.css";
 import { useSidebarContext } from "@/hooks/use-sidebar";
 import CustomNode from "@/components/nodes/CustomNode";
 import ColorSelectorNode from "@/components/FlowEditor/ColorSelectorNode";
-import NodePreviewDrawer from "@/components/NodePreview/NodePreview";
+import NodePreviewDrawer from "@/components/NodePreview";
 import { initBgColor, defaultViewport, snapGrid } from "../constants";
 
 const nodeTypes = {
@@ -67,7 +67,6 @@ const CustomNodeFlow = () => {
       }))
     );
 
-    // Automatically create edges by linking each node to the next
     setEdges(
       createNodes.slice(0, -1).map((node, index) => ({
         id: `e${node.id}-${createNodes[index + 1].id}`,
@@ -83,20 +82,16 @@ const CustomNodeFlow = () => {
     []
   );
 
-  // Handler for node click
   const onNodeClick: NodeMouseHandler = useCallback(
     (event, node) => {
-      // Check if the click is on the delete button
       const target = event.target as HTMLElement;
       if (
         target.classList.contains("node-delete-button") ||
         target.closest(".node-delete-button")
       ) {
-        // If clicked on delete button, don't open the drawer
         return;
       }
 
-      // Otherwise, find the original node data and open the drawer
       const originalNode = createNodes.find((n) => n.id === node.id);
       if (originalNode) {
         setSelectedNode({ ...node, originalData: originalNode }as Node);
@@ -106,13 +101,10 @@ const CustomNodeFlow = () => {
     [createNodes]
   );
 
-  // Handler for deleting a node
   const handleDeleteNode = useCallback(
     (nodeId: string) => {
-      // Use the deleteNode function from context
       deleteNode(nodeId);
 
-      // Close the drawer if the deleted node was selected
       if (selectedNode && selectedNode.id === nodeId) {
         setIsDrawerOpen(false);
         setSelectedNode(null);
@@ -121,14 +113,11 @@ const CustomNodeFlow = () => {
     [deleteNode, selectedNode]
   );
 
-  // Handler for saving edited node
   const handleSaveNode = useCallback(
     (updatedNode) => {
       if (updateNode && selectedNode) {
-        // Update in the context
         updateNode(updatedNode);
 
-        // Close the drawer
         setIsDrawerOpen(false);
         setSelectedNode(null);
       }
@@ -169,7 +158,6 @@ const CustomNodeFlow = () => {
         <ZoomSlider position="top-left" />
       </ReactFlow>
 
-      {/* Node Preview Drawer */}
       <NodePreviewDrawer
         isOpen={isDrawerOpen}
         setIsOpen={setIsDrawerOpen}
