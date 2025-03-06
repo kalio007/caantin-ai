@@ -3,7 +3,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { QuestionNodePreviewProps } from "@/types/types";
+
+interface QuestionNodePreviewProps {
+  editedNode: any;
+  handleInputChange: (field: string, value: string) => void;
+  handleAddOption: () => void;
+  handleRemoveOption: (index: number) => void;
+}
 
 const QuestionNodePreview = ({
   editedNode,

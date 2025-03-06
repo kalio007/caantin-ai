@@ -2,20 +2,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-interface GreetingNodePreviewProps {
+interface GeneralNodePreviewProps {
   editedNode: any;
   handleInputChange: (field: string, value: string) => void;
 }
 
-const GreetingNodePreview = ({
+const GeneralNodePreview = ({
   editedNode,
   handleInputChange,
-}: GreetingNodePreviewProps) => {
+}: GeneralNodePreviewProps) => {
   return (
     <Card className="mb-4">
       <CardHeader>
-        {/* Edit the name properly  */}
-        <CardTitle> {editedNode.type} Node</CardTitle>
+        <CardTitle>{editedNode.type} Node</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
@@ -32,4 +31,4 @@ const GreetingNodePreview = ({
   );
 };
 
-export default GreetingNodePreview;
+export default GeneralNodePreview;

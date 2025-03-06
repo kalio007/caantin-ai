@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import QuestionNodePreview from "./NodePreview/QuestionPreview";
 import {
   Card,
   CardContent,
@@ -20,9 +21,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { NodePreviewDrawerProps, NodeType } from "@/types/types";
-import GreetingNodePreview from "@/components/NodePreview/gretting-preview";
-import QuestionNodePreview from "@/components/NodePreview/question-preview";
+import GeneralNodePreview from "./NodePreview/GeneralInputPreview";
+
+type NodePreviewDrawerProps = {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  node: any | null;
+  onSave: (updatedNode: any) => void;
+};
 
 const NodePreviewDrawer = ({
   isOpen,
@@ -30,15 +36,11 @@ const NodePreviewDrawer = ({
   node,
   onSave,
 }: NodePreviewDrawerProps) => {
-  const [editedNode, setEditedNode] = useState<NodeType | null>(null);
+  const [editedNode, setEditedNode] = useState<any>(null);
 
   useEffect(() => {
-    if (node && node.originalData) {
-      setEditedNode({
-        id: node.originalData.id,
-        type: node.originalData.type,
-        data: node.originalData.data || {},
-      });
+    if (node) {
+      setEditedNode({ ...node.originalData });
     }
   }, [node]);
 
@@ -57,9 +59,7 @@ const NodePreviewDrawer = ({
     } else if (field.startsWith("option_")) {
       // Handle option changes for question nodes
       const optionIndex = parseInt(field.split("_")[1]);
-      const newOptions = editedNode.data.options
-        ? [...editedNode.data.options]
-        : [];
+      const newOptions = [...editedNode.data.options];
       newOptions[optionIndex] = value;
 
       setEditedNode({
@@ -95,9 +95,7 @@ const NodePreviewDrawer = ({
   // Handle removing an option
   const handleRemoveOption = (index: number) => {
     if (editedNode?.type === "question" && editedNode.data) {
-      const newOptions = editedNode.data.options
-        ? [...editedNode.data.options]
-        : [];
+      const newOptions = [...editedNode.data.options];
       newOptions.splice(index, 1);
 
       setEditedNode({
@@ -202,14 +200,12 @@ const NodePreviewDrawer = ({
             <QuestionNodePreview
               editedNode={editedNode}
               handleInputChange={handleInputChange}
-              handleAddOption={handleAddOption}
-              handleRemoveOption={handleRemoveOption}
             />
           )}
 
           {(editedNode.type === "greeting" ||
             editedNode.type === "information") && (
-            <GreetingNodePreview
+            <GeneralNodePreview
               editedNode={editedNode}
               handleInputChange={handleInputChange}
             />
