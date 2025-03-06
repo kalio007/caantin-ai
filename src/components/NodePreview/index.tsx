@@ -37,8 +37,6 @@ const NodePreviewDrawer = ({
       setEditedNode({ ...node.originalData });
     }
   }, [node]);
-
-  // Handle form changes based on node type
   const handleInputChange = (field: string, value: string) => {
     if (!editedNode) return;
 
@@ -72,7 +70,6 @@ const NodePreviewDrawer = ({
     }
   };
 
-  // Handle adding a new option to a question node
   const handleAddOption = () => {
     if (editedNode?.type === "question" && editedNode.data) {
       const options = editedNode.data.options || [];
@@ -85,8 +82,6 @@ const NodePreviewDrawer = ({
       });
     }
   };
-
-  // Handle removing an option
   const handleRemoveOption = (index: number) => {
     if (editedNode?.type === "question" && editedNode.data) {
       const newOptions = [...editedNode.data.options];
@@ -102,7 +97,6 @@ const NodePreviewDrawer = ({
     }
   };
 
-  // If no node is selected, don't render anything
   if (!node || !editedNode) {
     return null;
   }

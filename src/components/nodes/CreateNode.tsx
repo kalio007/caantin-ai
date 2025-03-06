@@ -80,7 +80,6 @@ export const CreateNode: React.FC<{}> = () => {
           </>
         )}
 
-        {/* Dropdown to select node type */}
         <Select
           value={nodeType === null ? undefined : nodeType}
           onValueChange={(val) => setNodeType(val as SidebarFormType | "none")}
