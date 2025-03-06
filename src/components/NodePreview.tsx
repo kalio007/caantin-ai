@@ -24,7 +24,7 @@ import {
 type NodePreviewDrawerProps = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  node: any | null; // Using any type here, but you should define a proper type
+  node: any | null;
   onSave: (updatedNode: any) => void;
 };
 
@@ -36,7 +36,6 @@ const NodePreviewDrawer = ({
 }: NodePreviewDrawerProps) => {
   const [editedNode, setEditedNode] = useState<any>(null);
 
-  // Update the local state when the node changes
   useEffect(() => {
     if (node) {
       setEditedNode({ ...node.originalData });

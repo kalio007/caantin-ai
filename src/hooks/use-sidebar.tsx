@@ -27,8 +27,11 @@ interface SidebarContextType {
   activeForm: SidebarFormType;
   setActiveForm: (form: SidebarFormType) => void;
   createNodes: CreateNode[];
-  setCreateNodes: (nodes: CreateNode[]) => void;
+  setCreateNodes: (
+    nodes: CreateNode[] | ((prev: CreateNode[]) => CreateNode[])
+  ) => void;
   updateNode: (updatedNode: CreateNode) => void;
+  deleteNode: (nodeId: string) => void;
 }
 
 const SidebarContext = createContext<SidebarContextType>({
@@ -37,6 +40,7 @@ const SidebarContext = createContext<SidebarContextType>({
   createNodes: [],
   setCreateNodes: () => {},
   updateNode: () => {},
+  deleteNode: () => {},
 });
 
 export const SidebarProvider: React.FC<{ children: ReactNode }> = ({
@@ -52,6 +56,21 @@ export const SidebarProvider: React.FC<{ children: ReactNode }> = ({
     );
   };
 
+  // Function to delete a node and automatically fix the flow by connecting adjacent nodes
+  const deleteNode = (nodeId: string) => {
+    setCreateNodes((prevNodes) => {
+      // Find the index of the node to be deleted
+      const nodeIndex = prevNodes.findIndex((node) => node.id === nodeId);
+
+      if (nodeIndex === -1) return prevNodes; // Node not found
+
+      const newNodes = [...prevNodes];
+      newNodes.splice(nodeIndex, 1);
+
+      return newNodes;
+    });
+  };
+
   return (
     <SidebarContext.Provider
       value={{
@@ -60,6 +79,7 @@ export const SidebarProvider: React.FC<{ children: ReactNode }> = ({
         createNodes,
         setCreateNodes,
         updateNode,
+        deleteNode,
       }}
     >
       {children}

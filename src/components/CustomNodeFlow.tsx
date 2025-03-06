@@ -15,6 +15,7 @@ import {
 import "@xyflow/react/dist/style.css";
 import { useSidebarContext } from "@/hooks/use-sidebar";
 
+import CustomNode from "@/components/CustomNode";
 import ColorSelectorNode from "@/components/ColorSelectorNode";
 import NodePreviewDrawer from "@/components/NodePreview";
 
@@ -23,13 +24,18 @@ const initBgColor = "#c9f1dd";
 const snapGrid: [number, number] = [20, 20];
 const nodeTypes = {
   selectorNode: ColorSelectorNode,
+  default: CustomNode,
+  input: CustomNode,
+  greeting: CustomNode,
+  question: CustomNode,
+  information: CustomNode,
 };
 
 const defaultViewport = { x: 0, y: 0, zoom: 1.5 };
 
 const CustomNodeFlow = () => {
   // from the sidebar context
-  const { createNodes, updateNode } = useSidebarContext();
+  const { createNodes, updateNode, deleteNode } = useSidebarContext();
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [bgColor, setBgColor] = useState(initBgColor);
@@ -43,10 +49,12 @@ const CustomNodeFlow = () => {
       createNodes.map((node, index) => ({
         id: node.id,
         type: node.type || "input",
-        data:
-          node.type === "question"
+        data: {
+          ...(node.type === "question"
             ? { label: node.data?.question, options: node.data?.options }
-            : { label: node.data?.message },
+            : { label: node.data?.message }),
+          onDelete: () => handleDeleteNode(node.id),
+        },
         position: { x: index * 250, y: 50 },
         sourcePosition:
           node.type === "greeting"
@@ -82,7 +90,17 @@ const CustomNodeFlow = () => {
   // Handler for node click
   const onNodeClick: NodeMouseHandler = useCallback(
     (event, node) => {
-      // Find the original node data from createNodes
+      // Check if the click is on the delete button
+      const target = event.target as HTMLElement;
+      if (
+        target.classList.contains("node-delete-button") ||
+        target.closest(".node-delete-button")
+      ) {
+        // If clicked on delete button, don't open the drawer
+        return;
+      }
+
+      // Otherwise, find the original node data and open the drawer
       const originalNode = createNodes.find((n) => n.id === node.id);
       if (originalNode) {
         setSelectedNode({ ...node, originalData: originalNode });
@@ -92,11 +110,26 @@ const CustomNodeFlow = () => {
     [createNodes]
   );
 
+  // Handler for deleting a node
+  const handleDeleteNode = useCallback(
+    (nodeId: string) => {
+      // Use the deleteNode function from context
+      deleteNode(nodeId);
+
+      // Close the drawer if the deleted node was selected
+      if (selectedNode && selectedNode.id === nodeId) {
+        setIsDrawerOpen(false);
+        setSelectedNode(null);
+      }
+    },
+    [deleteNode, selectedNode]
+  );
+
   // Handler for saving edited node
   const handleSaveNode = useCallback(
     (updatedNode) => {
       if (updateNode && selectedNode) {
-        // Update in the context (assuming updateNode is provided by the context)
+        // Update in the context
         updateNode(updatedNode);
 
         // Close the drawer
@@ -140,6 +173,7 @@ const CustomNodeFlow = () => {
         <ZoomSlider position="top-left" />
       </ReactFlow>
 
+      {/* Node Preview Drawer */}
       <NodePreviewDrawer
         isOpen={isDrawerOpen}
         setIsOpen={setIsDrawerOpen}
