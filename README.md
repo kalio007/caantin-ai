@@ -7,10 +7,10 @@ This project is a node-based flow builder that allows users to create and manage
 - Create different node types: **Greeting, Question, and Information**  
 - Connect nodes dynamically  
 - Responsive design for mobile and desktop  
-- Uses **React Flow** for interactive node management  
-- Styled with **shadcn/ui** for a modern UI  
+- Uses [React Flow](https://reactflow.dev/) for interactive node management  
+- Styled with [shadcn/ui](https://ui.shadcn.com/) for a modern UI  
 
-## Prerequisites  
+## Prerequisites  to run application locally
 
 Make sure you have the following installed:  
 
@@ -24,8 +24,8 @@ Make sure you have the following installed:
 1. Clone the repository:  
 
    ```sh  
-   git clone https://github.com/yourusername/yourproject.git  
-   cd yourproject  
+   git clone [https://github.com/yourusername/yourproject.git ](https://github.com/kalio007/caantin-ai) 
+   cd caantin-ai  
    ```  
 
 2. Start the application using Docker Compose:  
