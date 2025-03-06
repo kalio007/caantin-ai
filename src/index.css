@@ -1,6 +1,7 @@
 @import url('./xy-theme.css');
 @import "tailwindcss";
 
+
 @plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
@@ -10,6 +11,7 @@ body {
   margin: 0;
   font-family: sans-serif;
   box-sizing: border-box;
+  font-family: "Roboto Mono", monospace;
 }
 
 #app {
