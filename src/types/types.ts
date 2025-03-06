@@ -28,3 +28,10 @@ export type NodeData =
   | GreetingNodeData
   | QuestionNodeData
   | InformationNodeData;
+
+export  type NodePreviewDrawerProps = {
+    isOpen: boolean;
+    setIsOpen: (isOpen: boolean) => void;
+    node: any | null;
+    onSave: (updatedNode: any) => void;
+  };

@@ -22,13 +22,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import GeneralNodePreview from "./NodePreview/GeneralInputPreview";
-
-type NodePreviewDrawerProps = {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-  node: any | null;
-  onSave: (updatedNode: any) => void;
-};
+import { NodePreviewDrawerProps } from "@/types/types";
 
 const NodePreviewDrawer = ({
   isOpen,
@@ -145,8 +139,6 @@ const NodePreviewDrawer = ({
               </div>
             </CardContent>
           </Card>
-
-          {/* Content based on node type */}
           {editedNode.type === "question" && (
             <QuestionNodePreview
               editedNode={editedNode}
