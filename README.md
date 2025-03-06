@@ -24,7 +24,7 @@ Make sure you have the following installed:
 1. Clone the repository:  
 
    ```sh  
-   git clone [https://github.com/yourusername/yourproject.git ](https://github.com/kalio007/caantin-ai) 
+   git clone https://github.com/kalio007/caantin-ai
    cd caantin-ai  
    ```  
 
