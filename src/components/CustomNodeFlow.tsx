@@ -14,14 +14,11 @@ import {
 
 import "@xyflow/react/dist/style.css";
 import { useSidebarContext } from "@/hooks/use-sidebar";
-
 import CustomNode from "@/components/CustomNode";
 import ColorSelectorNode from "@/components/ColorSelectorNode";
 import NodePreviewDrawer from "@/components/NodePreview";
+import { initBgColor, snapGrid, defaultViewport } from "@/constants";
 
-const initBgColor = "#c9f1dd";
-
-const snapGrid: [number, number] = [20, 20];
 const nodeTypes = {
   selectorNode: ColorSelectorNode,
   default: CustomNode,
@@ -30,9 +27,6 @@ const nodeTypes = {
   question: CustomNode,
   information: CustomNode,
 };
-
-const defaultViewport = { x: 0, y: 0, zoom: 1.5 };
-
 const CustomNodeFlow = () => {
   // from the sidebar context
   const { createNodes, updateNode, deleteNode } = useSidebarContext();
@@ -40,7 +34,6 @@ const CustomNodeFlow = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [bgColor, setBgColor] = useState(initBgColor);
 
-  // State for drawer
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
 
@@ -86,7 +79,6 @@ const CustomNodeFlow = () => {
     (params) => setEdges((eds) => addEdge({ ...params, animated: true }, eds)),
     []
   );
-
   // Handler for node click
   const onNodeClick: NodeMouseHandler = useCallback(
     (event, node) => {
@@ -103,7 +95,12 @@ const CustomNodeFlow = () => {
       // Otherwise, find the original node data and open the drawer
       const originalNode = createNodes.find((n) => n.id === node.id);
       if (originalNode) {
-        setSelectedNode({ ...node, originalData: originalNode });
+        setSelectedNode({
+          id: node.id,
+          type: node.type || "default",
+          data: node.data,
+          position: node.position,
+        });
         setIsDrawerOpen(true);
       }
     },
@@ -172,8 +169,6 @@ const CustomNodeFlow = () => {
         <Background />
         <ZoomSlider position="top-left" />
       </ReactFlow>
-
-      {/* Node Preview Drawer */}
       <NodePreviewDrawer
         isOpen={isDrawerOpen}
         setIsOpen={setIsDrawerOpen}

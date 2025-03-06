@@ -20,13 +20,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-type NodePreviewDrawerProps = {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-  node: any | null;
-  onSave: (updatedNode: any) => void;
-};
+import { NodePreviewDrawerProps, NodeType } from "@/types/types";
+import GreetingNodePreview from "@/components/NodePreview/gretting-preview";
+import QuestionNodePreview from "@/components/NodePreview/question-preview";
 
 const NodePreviewDrawer = ({
   isOpen,
@@ -34,11 +30,15 @@ const NodePreviewDrawer = ({
   node,
   onSave,
 }: NodePreviewDrawerProps) => {
-  const [editedNode, setEditedNode] = useState<any>(null);
+  const [editedNode, setEditedNode] = useState<NodeType | null>(null);
 
   useEffect(() => {
-    if (node) {
-      setEditedNode({ ...node.originalData });
+    if (node && node.originalData) {
+      setEditedNode({
+        id: node.originalData.id,
+        type: node.originalData.type,
+        data: node.originalData.data || {},
+      });
     }
   }, [node]);
 
@@ -57,7 +57,9 @@ const NodePreviewDrawer = ({
     } else if (field.startsWith("option_")) {
       // Handle option changes for question nodes
       const optionIndex = parseInt(field.split("_")[1]);
-      const newOptions = [...editedNode.data.options];
+      const newOptions = editedNode.data.options
+        ? [...editedNode.data.options]
+        : [];
       newOptions[optionIndex] = value;
 
       setEditedNode({
@@ -93,7 +95,9 @@ const NodePreviewDrawer = ({
   // Handle removing an option
   const handleRemoveOption = (index: number) => {
     if (editedNode?.type === "question" && editedNode.data) {
-      const newOptions = [...editedNode.data.options];
+      const newOptions = editedNode.data.options
+        ? [...editedNode.data.options]
+        : [];
       newOptions.splice(index, 1);
 
       setEditedNode({
@@ -146,80 +150,69 @@ const NodePreviewDrawer = ({
 
           {/* Content based on node type */}
           {editedNode.type === "question" && (
-            <Card className="mb-4">
-              <CardHeader>
-                <CardTitle>Question Node</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="question-text">Question</Label>
-                  <Textarea
-                    id="question-text"
-                    value={editedNode.data?.question || ""}
-                    onChange={(e) =>
-                      handleInputChange("question", e.target.value)
-                    }
-                    rows={3}
-                  />
-                </div>
+            // <Card className="mb-4">
+            //   <CardHeader>
+            //     <CardTitle>Question Node</CardTitle>
+            //   </CardHeader>
+            //   <CardContent className="space-y-4">
+            //     <div className="space-y-2">
+            //       <Label htmlFor="question-text">Question</Label>
+            //       <Textarea
+            //         id="question-text"
+            //         value={editedNode.data?.question || ""}
+            //         onChange={(e) =>
+            //           handleInputChange("question", e.target.value)
+            //         }
+            //         rows={3}
+            //       />
+            //     </div>
 
-                <div className="space-y-2">
-                  <Label>Options</Label>
-                  {editedNode.data?.options?.map(
-                    (option: string, index: number) => (
-                      <div key={index} className="flex gap-2 mt-2">
-                        <Input
-                          value={option}
-                          onChange={(e) =>
-                            handleInputChange(`option_${index}`, e.target.value)
-                          }
-                        />
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => handleRemoveOption(index)}
-                        >
-                          Remove
-                        </Button>
-                      </div>
-                    )
-                  )}
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleAddOption}
-                    className="mt-2"
-                  >
-                    Add Option
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            //     <div className="space-y-2">
+            //       <Label>Options</Label>
+            //       {editedNode.data?.options?.map(
+            //         (option: string, index: number) => (
+            //           <div key={index} className="flex gap-2 mt-2">
+            //             <Input
+            //               value={option}
+            //               onChange={(e) =>
+            //                 handleInputChange(`option_${index}`, e.target.value)
+            //               }
+            //             />
+            //             <Button
+            //               variant="destructive"
+            //               size="sm"
+            //               onClick={() => handleRemoveOption(index)}
+            //             >
+            //               Remove
+            //             </Button>
+            //           </div>
+            //         )
+            //       )}
+            //       <Button
+            //         variant="outline"
+            //         size="sm"
+            //         onClick={handleAddOption}
+            //         className="mt-2"
+            //       >
+            //         Add Option
+            //       </Button>
+            //     </div>
+            //   </CardContent>
+            // </Card>
+            <QuestionNodePreview
+              editedNode={editedNode}
+              handleInputChange={handleInputChange}
+              handleAddOption={handleAddOption}
+              handleRemoveOption={handleRemoveOption}
+            />
           )}
 
           {(editedNode.type === "greeting" ||
             editedNode.type === "information") && (
-            <Card className="mb-4">
-              <CardHeader>
-                <CardTitle>
-                  {editedNode.type === "greeting" ? "Greeting" : "Information"}{" "}
-                  Node
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <Label htmlFor="message-text">Message</Label>
-                  <Textarea
-                    id="message-text"
-                    value={editedNode.data?.message || ""}
-                    onChange={(e) =>
-                      handleInputChange("message", e.target.value)
-                    }
-                    rows={4}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+            <GreetingNodePreview
+              editedNode={editedNode}
+              handleInputChange={handleInputChange}
+            />
           )}
         </div>
 
