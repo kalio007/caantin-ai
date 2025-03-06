@@ -1,6 +1,6 @@
 # **Script Builder Node Editor**
 
-A **visual node editor** designed to create and edit conversation flows effortlessly. This tool allows non-technical users, such as Sales and Marketing teams, to **design AI-driven workflows** without coding. It supports multiple node types, visual representations, and an intuitive drag-and-drop interface.
+A **visual node editor** designed to create and edit conversation flows effortlessly. This tool allows non-technical users, such as Sales and Marketing teams, to **design AI-driven workflows** without coding. It supports multiple node types, visual representations, and an intuitive drag-and-drop interface. (LiVE DEMO)[https://caantin-ai.vercel.app/]
 
 ## **Project Overview**
 
@@ -19,7 +19,8 @@ The **Script Builder** is a no-code tool for building structured AI conversation
 
 ### **Core Features (P0)**
 
-- **Node-based conversation editor** – Drag and drop nodes to define workflows  
+- **Node-based conversation editor** – Drag and drop nodes to define workflows
+- **Delete and Update Node from Editor** - Edit, Delete node on editor
 - **Three node types** – Greeting, Question, and Information  
 - **Dynamic node properties** – Configure messages, options, and responses  
 - **Live preview** – See real-time updates on conversation structure  
@@ -36,10 +37,6 @@ The **Script Builder** is a no-code tool for building structured AI conversation
 
 - **Node connectivity** – Link nodes to define logical conversation paths  
 - **Dark/light mode** – Theme-aware UI customization  
-
----
-
-
 
 ---
 
@@ -65,6 +62,7 @@ yarn install
 # Start the development server
 yarn dev
 ```
+### **3. [View the Live App]()
 
 ---
 
