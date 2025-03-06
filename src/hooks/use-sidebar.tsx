@@ -49,20 +49,17 @@ export const SidebarProvider: React.FC<{ children: ReactNode }> = ({
   const [activeForm, setActiveForm] = useState<SidebarFormType>(null);
   const [createNodes, setCreateNodes] = useState<CreateNode[]>([]);
 
-  // Function to update a specific node
   const updateNode = (updatedNode: CreateNode) => {
     setCreateNodes((prevNodes) =>
       prevNodes.map((node) => (node.id === updatedNode.id ? updatedNode : node))
     );
   };
 
-  // Function to delete a node and automatically fix the flow by connecting adjacent nodes
   const deleteNode = (nodeId: string) => {
     setCreateNodes((prevNodes) => {
-      // Find the index of the node to be deleted
       const nodeIndex = prevNodes.findIndex((node) => node.id === nodeId);
 
-      if (nodeIndex === -1) return prevNodes; // Node not found
+      if (nodeIndex === -1) return prevNodes; 
 
       const newNodes = [...prevNodes];
       newNodes.splice(nodeIndex, 1);
