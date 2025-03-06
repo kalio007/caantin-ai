@@ -45,3 +45,6 @@ export interface GeneralNodePreviewProps {
   editedNode: any;
   handleInputChange: (field: string, value: string) => void;
 }
+export interface NavbarProps {
+    title?: string;
+  }

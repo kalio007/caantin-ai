@@ -17,7 +17,7 @@ import { useSidebarContext } from "@/hooks/use-sidebar";
 import CustomNode from "@/components/nodes/CustomNode";
 import ColorSelectorNode from "@/components/FlowEditor/ColorSelectorNode";
 import NodePreviewDrawer from "@/components/NodePreview";
-import { initBgColor, defaultViewport, snapGrid } from "../constants";
+import { initBgColor, defaultViewport, snapGrid } from "../../constants";
 
 const nodeTypes = {
   selectorNode: ColorSelectorNode,
@@ -27,7 +27,6 @@ const nodeTypes = {
   question: CustomNode,
   information: CustomNode,
 };
-
 
 const CustomNodeFlow = () => {
   // from the sidebar context
@@ -94,7 +93,7 @@ const CustomNodeFlow = () => {
 
       const originalNode = createNodes.find((n) => n.id === node.id);
       if (originalNode) {
-        setSelectedNode({ ...node, originalData: originalNode }as Node);
+        setSelectedNode({ ...node, originalData: originalNode } as Node);
         setIsDrawerOpen(true);
       }
     },

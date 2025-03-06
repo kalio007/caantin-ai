@@ -7,6 +7,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { AppSidebar } from "./components/SidePanel/AppSideBar";
+import { Navbar } from "@/components/Navigation/NavBar";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -29,21 +30,24 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <ResizablePanelGroup
-        direction={isMobile ? "vertical" : "horizontal"}
-        className="h-screen w-full"
-      >
-        <ResizablePanel
-          defaultSize={isMobile ? 30 : 20}
-          className={isMobile ? "max-h-[40vh]" : ""}
+      <div className="h-screen w-full flex flex-col">
+        <Navbar />
+        <ResizablePanelGroup
+          direction={isMobile ? "vertical" : "horizontal"}
+          className="flex-1"
         >
-          <AppSidebar />
-        </ResizablePanel>
-        <ResizableHandle />
-        <ResizablePanel defaultSize={isMobile ? 70 : 80} className="h-full">
-          <div className="h-full w-full p-1">{children}</div>
-        </ResizablePanel>
-      </ResizablePanelGroup>
+          <ResizablePanel
+            defaultSize={isMobile ? 40 : 20}
+            className={isMobile ? "max-h-[40vh]" : ""}
+          >
+            <AppSidebar />
+          </ResizablePanel>
+          <ResizableHandle />
+          <ResizablePanel defaultSize={isMobile ? 60 : 80} className="h-full">
+            <div className="h-full w-full p-1">{children}</div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
     </ThemeProvider>
   );
 };

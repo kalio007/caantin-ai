@@ -19,9 +19,13 @@ const CustomNode = memo(({ id, data, type }: CustomNodeProps) => {
     <div
       className=""
       style={{
-        minWidth: "100px",
+        minWidth: "150px",
         minHeight: "50px",
-        maxWidth: "200px",
+        maxWidth: "300px",
+        height: "auto",
+        width: "auto",
+        padding: "10px",
+        position: "relative",
       }}
     >
       <button

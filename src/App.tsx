@@ -1,6 +1,6 @@
 import React from "react";
 import { Layout } from "./layout";
-import CustomNodeFlow from "./components/CustomNodeFlow";
+import CustomNodeFlow from "./components/FlowEditor/CustomNodeFlow";
 import { SidebarProvider } from "./hooks/use-sidebar";
 import { ModeToggle } from "./components/Theme/ModeToggle";
 
