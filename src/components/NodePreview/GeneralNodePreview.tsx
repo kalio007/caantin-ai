@@ -3,7 +3,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { GeneralNodePreviewProps } from "@/types/types";
 
-
 const GeneralNodePreview = ({
   editedNode,
   handleInputChange,
@@ -15,11 +14,11 @@ const GeneralNodePreview = ({
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
-          <Label htmlFor="greeting-text">Greeting</Label>
+          <Label htmlFor="message-text">Message</Label>
           <Textarea
-            id="greeting-text"
-            value={editedNode.data?.greeting || ""}
-            onChange={(e) => handleInputChange("greeting", e.target.value)}
+            id="message-text"
+            value={editedNode.data?.message || ""}
+            onChange={(e) => handleInputChange("message", e.target.value)}
             rows={3}
           />
         </div>
