@@ -14,14 +14,12 @@ import {
 
 import "@xyflow/react/dist/style.css";
 import { useSidebarContext } from "@/hooks/use-sidebar";
-
 import CustomNode from "@/components/CustomNode";
 import ColorSelectorNode from "@/components/ColorSelectorNode";
 import NodePreviewDrawer from "@/components/NodePreview";
+import { initBgColor, defaultViewport, snapGrid } from "./constants";
 
-const initBgColor = "#c9f1dd";
 
-const snapGrid: [number, number] = [20, 20];
 const nodeTypes = {
   selectorNode: ColorSelectorNode,
   default: CustomNode,
@@ -31,7 +29,6 @@ const nodeTypes = {
   information: CustomNode,
 };
 
-const defaultViewport = { x: 0, y: 0, zoom: 1.5 };
 
 const CustomNodeFlow = () => {
   // from the sidebar context
