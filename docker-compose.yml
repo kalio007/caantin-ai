@@ -1,11 +1,10 @@
-service:
+services:
   frontend:
     image: frontend
     build: 
-      context: ./
       dockerfile: Dockerfile
     ports:
       - "5173:5173"
-    env_file:
-      - ./frontend/.env
+    volumes:
+      - /app/node_modules
     restart: always
