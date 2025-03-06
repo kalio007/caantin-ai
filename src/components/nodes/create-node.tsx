@@ -11,7 +11,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 
-export const GreetingForm: React.FC<{}> = () => {
+export const CreateNode: React.FC<{}> = () => {
   const { createNodes, setCreateNodes } = useSidebarContext();
   const [nodeType, setNodeType] = useState<SidebarFormType | "none">("none");
   const [message, setMessage] = useState("");
@@ -48,7 +48,6 @@ export const GreetingForm: React.FC<{}> = () => {
         <CardTitle>Create a Node</CardTitle>
       </CardHeader>
       <CardContent>
-        {/* Message Input for Greeting and Information nodes */}
         {(nodeType === "greeting" || nodeType === "information") && (
           <Textarea
             value={message}

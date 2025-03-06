@@ -1,6 +1,4 @@
-import React from "react";
-
-//Theme for dark mode
+import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 
 import {
@@ -15,14 +13,34 @@ interface LayoutProps {
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  // Check screen size on mount and on resize
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
   return (
-    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <ResizablePanelGroup direction="horizontal" className="h-screen">
-        <ResizablePanel defaultSize={20}>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <ResizablePanelGroup
+        direction={isMobile ? "vertical" : "horizontal"}
+        className="h-screen w-full"
+      >
+        <ResizablePanel
+          defaultSize={isMobile ? 30 : 20}
+          className={isMobile ? "max-h-[40vh]" : ""}
+        >
           <AppSidebar />
         </ResizablePanel>
         <ResizableHandle />
-        <ResizablePanel defaultSize={80} className="h-full">
+        <ResizablePanel defaultSize={isMobile ? 70 : 80} className="h-full">
           <div className="h-full w-full p-1">{children}</div>
         </ResizablePanel>
       </ResizablePanelGroup>
