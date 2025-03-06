@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import QuestionNodePreview from "./NodePreview/QuestionPreview";
+import QuestionNodePreview from "./QuestionPreview";
 import {
   Card,
   CardContent,
@@ -21,7 +21,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import GeneralNodePreview from "./NodePreview/GeneralInputPreview";
+import GeneralNodePreview from "./GeneralNodePreview";
 import { NodePreviewDrawerProps } from "@/types/types";
 
 const NodePreviewDrawer = ({

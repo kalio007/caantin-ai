@@ -1,11 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { GeneralNodePreviewProps } from "@/types/types";
 
-interface GeneralNodePreviewProps {
-  editedNode: any;
-  handleInputChange: (field: string, value: string) => void;
-}
 
 const GeneralNodePreview = ({
   editedNode,

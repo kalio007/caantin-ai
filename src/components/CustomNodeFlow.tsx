@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import type { Node, Edge, NodeMouseHandler } from "@xyflow/react";
-import { ZoomSlider } from "@/components/zoom-slider";
+import { ZoomSlider } from "@/components/FlowEditor/zoom-slider";
 import {
   ReactFlow,
   useNodesState,
@@ -14,11 +14,10 @@ import {
 
 import "@xyflow/react/dist/style.css";
 import { useSidebarContext } from "@/hooks/use-sidebar";
-import CustomNode from "@/components/CustomNode";
-import ColorSelectorNode from "@/components/ColorSelectorNode";
-import NodePreviewDrawer from "@/components/NodePreview";
-import { initBgColor, defaultViewport, snapGrid } from "./constants";
-
+import CustomNode from "@/components/nodes/CustomNode";
+import ColorSelectorNode from "@/components/FlowEditor/ColorSelectorNode";
+import NodePreviewDrawer from "@/components/NodePreview/NodePreview";
+import { initBgColor, defaultViewport, snapGrid } from "../constants";
 
 const nodeTypes = {
   selectorNode: ColorSelectorNode,
@@ -100,7 +99,7 @@ const CustomNodeFlow = () => {
       // Otherwise, find the original node data and open the drawer
       const originalNode = createNodes.find((n) => n.id === node.id);
       if (originalNode) {
-        setSelectedNode({ ...node, originalData: originalNode });
+        setSelectedNode({ ...node, originalData: originalNode }as Node);
         setIsDrawerOpen(true);
       }
     },

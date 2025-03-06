@@ -1,15 +1,15 @@
 import React, { memo } from "react";
 import { Handle, Position, NodeProps } from "@xyflow/react";
 import { X } from "lucide-react";
+import { CustomNodeData } from "@/types/types";
 
-// Define our custom node props interface
-interface CustomNodeData {
-  label: string;
-  options?: string[];
-  onDelete: () => void;
-}
 
-const CustomNode = ({ id, data, type }: NodeProps<CustomNodeData>) => {
+// Create a type for our custom node props
+type CustomNodeProps = Omit<NodeProps, "data"> & {
+  data: CustomNodeData;
+};
+
+const CustomNode = memo(({ id, data, type }: CustomNodeProps) => {
   const { label, options, onDelete } = data;
 
   // Handle the delete button click
@@ -45,7 +45,7 @@ const CustomNode = ({ id, data, type }: NodeProps<CustomNodeData>) => {
           }
         `}
         />
-        <div className="font-bold">{type}</div>
+        <div className="font-bold">{String(type)}</div>
       </div>
 
       {/* Node content */}
@@ -83,6 +83,6 @@ const CustomNode = ({ id, data, type }: NodeProps<CustomNodeData>) => {
       )}
     </div>
   );
-};
+});
 
-export default memo(CustomNode);
+export default CustomNode;

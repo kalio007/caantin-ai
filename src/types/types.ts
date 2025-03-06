@@ -29,9 +29,19 @@ export type NodeData =
   | QuestionNodeData
   | InformationNodeData;
 
-export  type NodePreviewDrawerProps = {
-    isOpen: boolean;
-    setIsOpen: (isOpen: boolean) => void;
-    node: any | null;
-    onSave: (updatedNode: any) => void;
-  };
+export type NodePreviewDrawerProps = {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  node: any | null;
+  onSave: (updatedNode: any) => void;
+};
+export interface CustomNodeData {
+  label: string;
+  options?: string[];
+  onDelete: () => void;
+}
+
+export interface GeneralNodePreviewProps {
+  editedNode: any;
+  handleInputChange: (field: string, value: string) => void;
+}
