@@ -15,6 +15,7 @@ import {
 import "@xyflow/react/dist/style.css";
 import { useSidebarContext } from "@/hooks/use-sidebar";
 import CustomNode from "@/components/nodes/CustomNode";
+// import ColorSelectorNode from "@/components/FlowEditor/ColorSelectorNode";
 import NodePreviewDrawer from "@/components/NodePreview";
 import { initBgColor, defaultViewport, snapGrid } from "../../constants";
 
