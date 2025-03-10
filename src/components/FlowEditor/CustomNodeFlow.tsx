@@ -124,7 +124,7 @@ const CustomNodeFlow = () => {
   );
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full relative">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -138,6 +138,10 @@ const CustomNodeFlow = () => {
         snapGrid={snapGrid}
         defaultViewport={defaultViewport}
         fitView
+        fitViewOptions={{ padding: 0.2 }}
+        minZoom={0.2}
+        maxZoom={4}
+        className="touch-none"
         attributionPosition="bottom-left"
       >
         <MiniMap
@@ -150,10 +154,11 @@ const CustomNodeFlow = () => {
             if (n.type === "selectorNode") return bgColor;
             return "#fff";
           }}
+          className="hidden md:block"
         />
-        <Controls />
+        <Controls className="!bottom-4 !left-4 !top-auto" />
         <Background />
-        <ZoomSlider position="top-left" />
+        <ZoomSlider position="top-left" className="hidden md:block" />
       </ReactFlow>
 
       <NodePreviewDrawer

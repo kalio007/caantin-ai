@@ -16,30 +16,19 @@ const CustomNode = memo(({ id, data, type }: CustomNodeProps) => {
   };
 
   return (
-    <div
-      className=""
-      style={{
-        minWidth: "150px",
-        minHeight: "50px",
-        maxWidth: "300px",
-        height: "auto",
-        width: "auto",
-        padding: "10px",
-        position: "relative",
-      }}
-    >
+    <div className="min-w-[120px] md:min-w-[150px] min-h-[50px] max-w-[250px] md:max-w-[300px] h-auto w-auto p-2 md:p-[10px] relative">
       <button
         onClick={handleDeleteClick}
-        className="absolute top-0 right-0  bg-red-100 text-red-600  hover:bg-red-200 node-delete-button"
+        className="absolute top-0 right-0 p-1 bg-red-100 text-red-600 hover:bg-red-200 node-delete-button"
         aria-label="Delete node"
       >
-        <X size={16} />
+        <X size={14} className="md:w-4 md:h-4" />
       </button>
 
       <div className="flex items-left">
         <div
           className={`
-          w-3 h-3 mr-2 rounded-full
+          w-2 h-2 md:w-3 md:h-3 mr-1 md:mr-2 rounded-full
           ${
             type === "greeting"
               ? "bg-green-500"
@@ -51,15 +40,15 @@ const CustomNode = memo(({ id, data, type }: CustomNodeProps) => {
           }
         `}
         />
-        <div className="font-bold">{String(type)}</div>
+        <div className="text-sm md:text-base font-bold">{String(type)}</div>
       </div>
 
-      <div className="m-2  text-left">{label}</div>
+      <div className="m-1 md:m-2 text-xs md:text-sm text-left">{label}</div>
 
       {options && (
-        <div className="mt-2">
-          <div className="text-xs text-gray-500">Options:</div>
-          <ul className="text-xs pl-3">
+        <div className="mt-1 md:mt-2">
+          <div className="text-[10px] md:text-xs text-gray-500">Options:</div>
+          <ul className="text-[10px] md:text-xs pl-2 md:pl-3">
             {options.map((option, index) => (
               <li key={index}>{option}</li>
             ))}

@@ -48,3 +48,24 @@ export interface GeneralNodePreviewProps {
 export interface NavbarProps {
     title?: string;
   }
+
+  export interface NavbarProps {
+    notificationCount?: number;
+    userInitials?: string;
+    userEmail?: string;
+    userName?: string;
+    onLogout?: () => void;
+  }
+  
+  export interface BreadcrumbItemType {
+    name: string;
+    path: string;
+  }
+  
+  export interface PageBreadcrumbProps {
+    items: BreadcrumbItemType[];
+    title?: string;
+    version?: string;
+    actions?: React.ReactNode[];
+    className?: string;
+  }

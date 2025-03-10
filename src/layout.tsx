@@ -30,11 +30,11 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="h-screen w-full flex flex-col">
+      <div className="h-screen w-full flex flex-col overflow-hidden">
         <Navbar />
         <ResizablePanelGroup
           direction={isMobile ? "vertical" : "horizontal"}
-          className="flex-1"
+          className="flex-1 overflow-hidden"
         >
           <ResizablePanel
             defaultSize={isMobile ? 40 : 20}
@@ -44,7 +44,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           </ResizablePanel>
           <ResizableHandle />
           <ResizablePanel defaultSize={isMobile ? 60 : 80} className="h-full">
-            <div className="h-full w-full p-1">{children}</div>
+            <div className="h-full w-full p-1 overflow-hidden">{children}</div>
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>
