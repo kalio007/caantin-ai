@@ -14,6 +14,7 @@ import {
 export const CreateNode: React.FC<{}> = () => {
   const { createNodes, setCreateNodes } = useSidebarContext();
   const [nodeType, setNodeType] = useState<SidebarFormType | "none">("none");
+
   const [message, setMessage] = useState("");
   const [question, setQuestion] = useState("");
   const [selectedOption, setSelectedOption] = useState("");

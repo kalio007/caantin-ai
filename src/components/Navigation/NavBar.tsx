@@ -40,7 +40,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src="/avatar-placeholder.png" alt="User" />
+                  {/* <AvatarImage src="/avatar-placeholder.png" alt="User" /> */}
                   <AvatarFallback>US</AvatarFallback>
                 </Avatar>
               </Button>
