@@ -1,8 +1,9 @@
+//src/components/scripts/ScriptBuilder.tsx
 import React, { useState } from "react";
 import { ScriptHeader } from "./ScriptHeader";
 import { NodesSidebar } from "./NodesSidebar";
 import { NodePropertiesSidebar } from "./NodePropertiesSidebar";
-import { CustomNodeFlow } from "../nodes/CustomNodeFlow";
+import CustomNodeFlow from "../nodes/CustomNodeFlow";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -10,20 +11,22 @@ import {
 } from "@/components/ui/resizable";
 import { useToast } from "@/components/ui/use-toast";
 import { useSidebarContext } from "@/hooks/use-sidebar";
-
 interface ScriptBuilderProps {
   scriptName: string;
   version: string;
 }
+export type SidebarFormType =
+  | "greeting"
+  | "question"
+  | "information"
+  | "knowledge"
+  | "external"
+  | "transfer";
 
 export const ScriptBuilder = ({ scriptName, version }: ScriptBuilderProps) => {
   const { toast } = useToast();
   const { setActiveForm } = useSidebarContext();
   const [selectedNode, setSelectedNode] = useState<any>(null);
-
-  const handleNodeAdd = (nodeType: string) => {
-    setActiveForm(nodeType as any);
-  };
 
   const handleNodeSelect = (node: any) => {
     setSelectedNode(node);
@@ -75,7 +78,7 @@ export const ScriptBuilder = ({ scriptName, version }: ScriptBuilderProps) => {
       <div className="flex-1 overflow-hidden">
         <ResizablePanelGroup direction="horizontal">
           <ResizablePanel defaultSize={20} minSize={15} maxSize={30}>
-            <NodesSidebar onNodeAdd={handleNodeAdd} />
+            <NodesSidebar />
           </ResizablePanel>
 
           <ResizableHandle withHandle />

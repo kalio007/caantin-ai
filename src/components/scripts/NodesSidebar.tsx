@@ -1,3 +1,4 @@
+//src/components/scripts/NodesSidebar.tsx
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -15,6 +16,8 @@ import {
 import { TemplatesContainer } from "@/components/templates/TemplatesContainer";
 import { useTemplates } from "@/hooks/use-templates";
 import { Template } from "@/types/templates";
+import { CreateNode } from "../nodes/CreateNode";
+import { useSidebarContext, type SidebarFormType } from "@/hooks/use-sidebar";
 
 interface NodeType {
   id: string;
@@ -66,7 +69,7 @@ interface NodesSidebarProps {
   onNodeAdd?: (nodeType: string) => void;
 }
 
-export const NodesSidebar = ({ onNodeAdd }: NodesSidebarProps) => {
+export const NodesSidebar = () => {
   const { groupedTemplates, isLoading } = useTemplates();
   const [activeTab, setActiveTab] = useState("nodes");
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -76,6 +79,37 @@ export const NodesSidebar = ({ onNodeAdd }: NodesSidebarProps) => {
       node.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
       node.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const { createNodes, setCreateNodes } = useSidebarContext();
+  const [nodeType, setNodeType] = useState<SidebarFormType | "none">("none");
+
+  const [message, setMessage] = useState("");
+  const [question, setQuestion] = useState("");
+  const [selectedOption, setSelectedOption] = useState("");
+
+  const handleSave = () => {
+    if (
+      (nodeType === "greeting" && !message.trim()) ||
+      (nodeType === "information" && !message.trim()) ||
+      (nodeType === "question" && (!question.trim() || !selectedOption.trim()))
+    ) {
+      return;
+    }
+
+    const newNode = {
+      id: `${createNodes.length + 1}`,
+      type: nodeType as SidebarFormType,
+      data:
+        nodeType === "question"
+          ? { question, options: [selectedOption] }
+          : { message },
+    };
+
+    setCreateNodes([...createNodes, newNode]);
+    setMessage("");
+    setQuestion("");
+    setSelectedOption("");
+  };
 
   const handleTemplateSelect = (template: Template) => {
     // Handle template selection
@@ -131,7 +165,9 @@ export const NodesSidebar = ({ onNodeAdd }: NodesSidebarProps) => {
                     key={node.id}
                     variant="ghost"
                     className="w-full justify-start p-2 h-auto"
-                    onClick={() => onNodeAdd?.(node.type)}
+                    onClick={() => {
+                      handleSave;
+                    }}
                   >
                     <div className="flex items-start space-x-3">
                       <div className="mt-1">{node.icon}</div>
@@ -145,6 +181,7 @@ export const NodesSidebar = ({ onNodeAdd }: NodesSidebarProps) => {
                   </Button>
                 ))}
               </div>
+              <div></div>
             </ScrollArea>
           </div>
         </TabsContent>
