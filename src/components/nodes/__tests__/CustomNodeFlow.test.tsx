@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, act } from "@testing-library/react";
-import { CustomNodeFlow } from "../CustomNodeFlow";
+import CustomNodeFlow  from "../CustomNodeFlow";
 import { SidebarProvider } from "@/hooks/use-sidebar";
 
 // Mock ReactFlow since it uses canvas which is not available in jsdom

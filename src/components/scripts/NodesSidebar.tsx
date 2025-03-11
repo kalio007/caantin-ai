@@ -1,4 +1,3 @@
-//src/components/scripts/NodesSidebar.tsx
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -16,7 +15,6 @@ import {
 import { TemplatesContainer } from "@/components/templates/TemplatesContainer";
 import { useTemplates } from "@/hooks/use-templates";
 import { Template } from "@/types/templates";
-import { CreateNode } from "../nodes/CreateNode";
 import { useSidebarContext, type SidebarFormType } from "@/hooks/use-sidebar";
 
 interface NodeType {
@@ -65,6 +63,26 @@ const CONVERSATION_NODES: NodeType[] = [
   },
 ];
 
+// Default values for each node type
+const DEFAULT_NODE_VALUES = {
+  greeting: {
+    message: "Hello! How can I help you today?",
+  },
+  question: {
+    question: "What would you like to know?",
+    options: ["More information", "Talk to an agent", "Browse products"],
+  },
+  knowledge: {
+    knowledgeBase: "General product information",
+  },
+  external: {
+    externalSource: "CRM system",
+  },
+  transfer: {
+    transferTo: "Customer support",
+  },
+};
+
 interface NodesSidebarProps {
   onNodeAdd?: (nodeType: string) => void;
 }
@@ -72,7 +90,8 @@ interface NodesSidebarProps {
 export const NodesSidebar = () => {
   const { groupedTemplates, isLoading } = useTemplates();
   const [activeTab, setActiveTab] = useState("nodes");
-  const [searchQuery, setSearchQuery] = React.useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const { createNodes, setCreateNodes } = useSidebarContext();
 
   const filteredNodes = CONVERSATION_NODES.filter(
     (node) =>
@@ -80,35 +99,40 @@ export const NodesSidebar = () => {
       node.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const { createNodes, setCreateNodes } = useSidebarContext();
-  const [nodeType, setNodeType] = useState<SidebarFormType | "none">("none");
+  // Handle node selection and creation
+  const handleNodeSelect = (node: NodeType) => {
+    // Create node data based on the selected type
+    let nodeData = {};
 
-  const [message, setMessage] = useState("");
-  const [question, setQuestion] = useState("");
-  const [selectedOption, setSelectedOption] = useState("");
-
-  const handleSave = () => {
-    if (
-      (nodeType === "greeting" && !message.trim()) ||
-      (nodeType === "information" && !message.trim()) ||
-      (nodeType === "question" && (!question.trim() || !selectedOption.trim()))
-    ) {
-      return;
+    switch (node.type) {
+      case "greeting":
+        nodeData = DEFAULT_NODE_VALUES.greeting;
+        break;
+      case "question":
+        nodeData = DEFAULT_NODE_VALUES.question;
+        break;
+      case "knowledge":
+        nodeData = DEFAULT_NODE_VALUES.knowledge;
+        break;
+      case "external":
+        nodeData = DEFAULT_NODE_VALUES.external;
+        break;
+      case "transfer":
+        nodeData = DEFAULT_NODE_VALUES.transfer;
+        break;
+      default:
+        return;
     }
 
+    // Create the new node with pre-filled data
     const newNode = {
-      id: `${createNodes.length + 1}`,
-      type: nodeType as SidebarFormType,
-      data:
-        nodeType === "question"
-          ? { question, options: [selectedOption] }
-          : { message },
+      id: `node-${Date.now()}`,
+      type: node.type as SidebarFormType,
+      data: nodeData,
     };
 
+    // Add the new node to the list
     setCreateNodes([...createNodes, newNode]);
-    setMessage("");
-    setQuestion("");
-    setSelectedOption("");
   };
 
   const handleTemplateSelect = (template: Template) => {
@@ -128,13 +152,13 @@ export const NodesSidebar = () => {
           <TabsList className="flex w-full gap-8">
             <TabsTrigger
               value="nodes"
-              className="flex-1 pb-4 text-sm font-medium text-gray-500 hover:text-gray-700"
+              className="flex-1 text-sm font-medium text-gray-500 hover:text-gray-700"
             >
               Nodes
             </TabsTrigger>
             <TabsTrigger
               value="templates"
-              className="flex-1 pb-4 text-sm font-medium text-gray-500 hover:text-gray-700"
+              className="flex-1 text-sm font-medium text-gray-500 hover:text-gray-700"
             >
               Templates
             </TabsTrigger>
@@ -165,9 +189,7 @@ export const NodesSidebar = () => {
                     key={node.id}
                     variant="ghost"
                     className="w-full justify-start p-2 h-auto"
-                    onClick={() => {
-                      handleSave;
-                    }}
+                    onClick={() => handleNodeSelect(node)}
                   >
                     <div className="flex items-start space-x-3">
                       <div className="mt-1">{node.icon}</div>
@@ -181,7 +203,6 @@ export const NodesSidebar = () => {
                   </Button>
                 ))}
               </div>
-              <div></div>
             </ScrollArea>
           </div>
         </TabsContent>

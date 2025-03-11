@@ -241,14 +241,14 @@ const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
       }))
     );
 
-    setEdges(
-      createNodes.slice(0, -1).map((node, index) => ({
-        id: `e${node.id}-${createNodes[index + 1].id}`,
-        source: node.id,
-        target: createNodes[index + 1].id,
-        animated: true,
-      }))
-    );
+    // setEdges(
+    //   createNodes.slice(0, -1).map((node, index) => ({
+    //     id: `e${node.id}-${createNodes[index + 1].id}`,
+    //     source: node.id,
+    //     target: createNodes[index + 1].id,
+    //     animated: true,
+    //   }))
+    // );
   }, [createNodes]);
 
   const onConnect = useCallback(
