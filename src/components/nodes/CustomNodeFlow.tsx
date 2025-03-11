@@ -1,4 +1,4 @@
-//
+//src/components/nodes/CustomNodeFlow.tsx
 import React, { useState, useEffect, useCallback } from "react";
 import type { Node, Edge, NodeMouseHandler } from "@xyflow/react";
 import { ZoomSlider } from "@/components/FlowEditor/ZoomSlider";
@@ -18,6 +18,8 @@ import { useSidebarContext } from "@/hooks/use-sidebar";
 import { CustomNode } from "@/components/nodes/CustomNode";
 import NodePreviewDrawer from "@/components/NodePreview";
 import { initBgColor, defaultViewport, snapGrid } from "../../constants";
+import { useSidePanelContext } from "@/layout";
+
 
 const nodeTypes = {
   default: CustomNode,
@@ -39,6 +41,9 @@ const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
   // State for drawer
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
+
+  const { setIsSidePanelOpen } = useSidePanelContext();
+
 
   useEffect(() => {
     setNodes(
@@ -91,17 +96,16 @@ const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
       ) {
         return;
       }
-      if (onNodeSelect && originalNode) {
-        onNodeSelect({ ...node, originalData: originalNode } as Node);
-      }
       
       const originalNode = createNodes.find((n) => n.id === node.id);
       if (originalNode) {
-        setSelectedNode({ ...node, originalData: originalNode } as Node);
-        setIsDrawerOpen(true);
+        if (onNodeSelect) {
+          onNodeSelect({ ...node, originalData: originalNode } as Node);
+        }
+        setIsSidePanelOpen(true);
       }
     },
-    [createNodes]
+    [createNodes, onNodeSelect, setIsSidePanelOpen]
   );
 
   const handleDeleteNode = useCallback(
