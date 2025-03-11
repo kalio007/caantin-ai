@@ -16,10 +16,9 @@ import {
 import "@xyflow/react/dist/style.css";
 import { useSidebarContext } from "@/hooks/use-sidebar";
 import { CustomNode } from "@/components/nodes/CustomNode";
-import NodePreviewDrawer from "@/components/NodePreview";
+// import NodePreviewDrawer from "@/components/NodePreview";
 import { initBgColor, defaultViewport, snapGrid } from "../../constants";
 import { useSidePanelContext } from "@/layout";
-
 
 const nodeTypes = {
   default: CustomNode,
@@ -43,7 +42,6 @@ const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
 
   const { setIsSidePanelOpen } = useSidePanelContext();
-
 
   useEffect(() => {
     setNodes(
@@ -96,7 +94,7 @@ const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
       ) {
         return;
       }
-      
+
       const originalNode = createNodes.find((n) => n.id === node.id);
       if (originalNode) {
         if (onNodeSelect) {
@@ -120,17 +118,17 @@ const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
     [deleteNode, selectedNode]
   );
 
-  const handleSaveNode = useCallback(
-    (updatedNode) => {
-      if (updateNode && selectedNode) {
-        updateNode(updatedNode);
+  // const handleSaveNode = useCallback(
+  //   (updatedNode) => {
+  //     if (updateNode && selectedNode) {
+  //       updateNode(updatedNode);
 
-        setIsDrawerOpen(false);
-        setSelectedNode(null);
-      }
-    },
-    [selectedNode, updateNode]
-  );
+  //       setIsDrawerOpen(false);
+  //       setSelectedNode(null);
+  //     }
+  //   },
+  //   [selectedNode, updateNode]
+  // );
 
   return (
     <div className="w-full h-full">
@@ -165,12 +163,12 @@ const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
         <ZoomSlider position="top-left" />
       </ReactFlow>
 
-      <NodePreviewDrawer
+      {/* <NodePreviewDrawer
         isOpen={isDrawerOpen}
         setIsOpen={setIsDrawerOpen}
         node={selectedNode}
         onSave={handleSaveNode}
-      />
+      /> */}
     </div>
   );
 };

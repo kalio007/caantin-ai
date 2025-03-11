@@ -39,7 +39,7 @@ export const CustomNode = memo(({ id, data, type }: CustomNodeProps) => {
 
   return (
     <div className="group relative">
-      <div className="min-w-[200px] bg-white rounded-lg border border-gray-200 p-4 hover:border-gray-300 transition-colors">
+      <div className="min-w-[200px] bg-white rounded-lg  hover:border-gray-300 transition-colors">
         <button
           onClick={handleDeleteClick}
           className="absolute -top-2 -right-2 p-1 rounded-full bg-red-100 text-red-600 hover:bg-red-200 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
@@ -48,20 +48,21 @@ export const CustomNode = memo(({ id, data, type }: CustomNodeProps) => {
           <X size={12} />
         </button>
 
-        <div className="flex items-center gap-3">
-          {getNodeIcon()}
+        <div className="flex flex-col items-left gap-3 px-2 py-2">
+          <div className="flex space-x-2 text-sm">
+            <div>{getNodeIcon()}</div>
+            <div>{type.charAt(0).toUpperCase() + type.slice(1)}</div>
+          </div>
+
           <div>
             <div className="text-sm font-medium text-gray-900">{label}</div>
-            <div className="text-sm text-gray-500">
-              {description || getDefaultDescription(type as NodeType)}
-            </div>
           </div>
         </div>
 
         {options && options.length > 0 && (
           <div className="mt-3 space-y-1">
             {options.map((option, index) => (
-              <div key={index} className="text-sm text-gray-600 pl-8">
+              <div key={index} className="text-sm text-gray-600">
                 • {option}
               </div>
             ))}
@@ -94,21 +95,21 @@ export const CustomNode = memo(({ id, data, type }: CustomNodeProps) => {
   );
 });
 
-function getDefaultDescription(type: NodeType): string {
-  switch (type) {
-    case "greeting":
-      return "Start your conversation";
-    case "question":
-      return "Ask the customer something";
-    case "decision":
-      return "Create a branch in the flow";
-    case "knowledge":
-      return "Retrieve information";
-    case "external":
-      return "Connect to your systems";
-    case "transfer":
-      return "Hand off to a human agent";
-    default:
-      return "";
-  }
-}
+// function getDefaultDescription(type: NodeType): string {
+//   switch (type) {
+//     case "greeting":
+//       return "Start your conversation";
+//     case "question":
+//       return "Ask the customer something";
+//     case "decision":
+//       return "Create a branch in the flow";
+//     case "knowledge":
+//       return "Retrieve information";
+//     case "external":
+//       return "Connect to your systems";
+//     case "transfer":
+//       return "Hand off to a human agent";
+//     default:
+//       return "";
+//   }
+// }
