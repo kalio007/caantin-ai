@@ -4,7 +4,7 @@ import CustomNodeFlow from "./components/FlowEditor/CustomNodeFlow";
 import { SidebarProvider } from "./hooks/use-sidebar";
 import { ModeToggle } from "./components/Theme/ModeToggle";
 // import { PageBreadcrumb } from "@/components/Navigation/PageBreadcrumb";
-import ScriptsPage from "@/pages/ScriptsPage";
+import { ScriptsPage } from "@/pages/ScriptsPage";
 import DashboardPage from "@/pages/DashboardPage";
 import CallQueuePage from "@/pages/CallQueuePage";
 import AnalyticsPage from "@/pages/AnalyticsPage";

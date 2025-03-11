@@ -1,0 +1,104 @@
+import React, { useState } from "react";
+import { ScriptHeader } from "./ScriptHeader";
+import { NodesSidebar } from "./NodesSidebar";
+import { NodePropertiesSidebar } from "./NodePropertiesSidebar";
+import { CustomNodeFlow } from "../nodes/CustomNodeFlow";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import { useToast } from "@/components/ui/use-toast";
+import { useSidebarContext } from "@/hooks/use-sidebar";
+
+interface ScriptBuilderProps {
+  scriptName: string;
+  version: string;
+}
+
+export const ScriptBuilder = ({ scriptName, version }: ScriptBuilderProps) => {
+  const { toast } = useToast();
+  const { setActiveForm } = useSidebarContext();
+  const [selectedNode, setSelectedNode] = useState<any>(null);
+
+  const handleNodeAdd = (nodeType: string) => {
+    setActiveForm(nodeType as any);
+  };
+
+  const handleNodeSelect = (node: any) => {
+    setSelectedNode(node);
+  };
+
+  const handleNodeUpdate = (nodeId: string, data: any) => {
+    // Update node data logic here
+  };
+
+  const handleAddOption = (nodeId: string) => {
+    // Add option logic here
+  };
+
+  const handleRemoveOption = (nodeId: string, index: number) => {
+    // Remove option logic here
+  };
+
+  const handleTest = () => {
+    toast({
+      title: "Test mode activated",
+      description: "Your script is now in test mode.",
+    });
+  };
+
+  const handleShare = () => {
+    toast({
+      title: "Share script",
+      description: "Sharing functionality coming soon.",
+    });
+  };
+
+  const handleSave = () => {
+    toast({
+      title: "Script saved",
+      description: "Your changes have been saved successfully.",
+    });
+  };
+
+  return (
+    <div className="flex flex-col h-full">
+      <ScriptHeader
+        scriptName={scriptName}
+        version={version}
+        onTest={handleTest}
+        onShare={handleShare}
+        onSave={handleSave}
+      />
+
+      <div className="flex-1 overflow-hidden">
+        <ResizablePanelGroup direction="horizontal">
+          <ResizablePanel defaultSize={20} minSize={15} maxSize={30}>
+            <NodesSidebar onNodeAdd={handleNodeAdd} />
+          </ResizablePanel>
+
+          <ResizableHandle withHandle />
+
+          <ResizablePanel defaultSize={60}>
+            <div className="h-full bg-gray-50">
+              <CustomNodeFlow onNodeSelect={handleNodeSelect} />
+            </div>
+          </ResizablePanel>
+
+          <ResizableHandle withHandle />
+
+          <ResizablePanel defaultSize={20}>
+            <NodePropertiesSidebar
+              selectedNode={selectedNode}
+              onUpdate={handleNodeUpdate}
+              onAddOption={handleAddOption}
+              onRemoveOption={handleRemoveOption}
+              onClose={() => setSelectedNode(null)}
+            />
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
+    </div>
+  );
+};
