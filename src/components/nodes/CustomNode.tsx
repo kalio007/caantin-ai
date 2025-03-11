@@ -1,93 +1,114 @@
 import React, { memo } from "react";
-import { Handle, Position, NodeProps } from "@xyflow/react";
-import { X } from "lucide-react";
-
-interface CustomNodeData {
-  label: string;
-  options?: string[];
-  onDelete: () => void;
-}
-
-type CustomNodeProps = Omit<NodeProps, "data"> & {
-  data: CustomNodeData;
-};
+import { Handle, Position } from "@xyflow/react";
+import {
+  X,
+  MessageCircle,
+  HelpCircle,
+  GitFork,
+  Database,
+  PhoneForwarded,
+} from "lucide-react";
+import { CustomNodeProps, NodeType } from "@/types/nodes";
 
 export const CustomNode = memo(({ id, data, type }: CustomNodeProps) => {
-  const { label, options, onDelete } = data;
+  const { label, description, options, onDelete } = data;
 
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     onDelete();
   };
 
-  const getNodeColor = () => {
-    switch (type) {
+  const getNodeIcon = () => {
+    switch (type as NodeType) {
       case "greeting":
-        return "bg-green-500";
+        return <MessageCircle className="w-5 h-5 text-green-500" />;
       case "question":
-        return "bg-blue-500";
+        return <HelpCircle className="w-5 h-5 text-blue-500" />;
+      case "decision":
+        return <GitFork className="w-5 h-5 text-purple-500" />;
       case "knowledge":
-        return "bg-yellow-500";
+        return <HelpCircle className="w-5 h-5 text-yellow-500" />;
       case "external":
-        return "bg-purple-500";
+        return <Database className="w-5 h-5 text-purple-500" />;
       case "transfer":
-        return "bg-orange-500";
+        return <PhoneForwarded className="w-5 h-5 text-orange-500" />;
       default:
-        return "bg-gray-500";
+        return <MessageCircle className="w-5 h-5 text-gray-500" />;
     }
   };
 
   return (
-    <div className="min-w-[120px] md:min-w-[150px] min-h-[50px] max-w-[250px] md:max-w-[300px] bg-white rounded-lg shadow-md border border-gray-200 p-3">
-      <button
-        onClick={handleDeleteClick}
-        className="absolute -top-2 -right-2 p-1 rounded-full bg-red-100 text-red-600 hover:bg-red-200 shadow-sm"
-        aria-label="Delete node"
-      >
-        <X size={12} />
-      </button>
+    <div className="group relative">
+      <div className="min-w-[200px] bg-white rounded-lg border border-gray-200 p-4 hover:border-gray-300 transition-colors">
+        <button
+          onClick={handleDeleteClick}
+          className="absolute -top-2 -right-2 p-1 rounded-full bg-red-100 text-red-600 hover:bg-red-200 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+          aria-label="Delete node"
+        >
+          <X size={12} />
+        </button>
 
-      <div className="flex items-center gap-2 mb-2">
-        <div className={`w-2 h-2 rounded-full ${getNodeColor()}`} />
-        <div className="text-xs font-medium text-gray-600">
-          {type.charAt(0).toUpperCase() + type.slice(1)}
+        <div className="flex items-center gap-3">
+          {getNodeIcon()}
+          <div>
+            <div className="text-sm font-medium text-gray-900">{label}</div>
+            <div className="text-sm text-gray-500">
+              {description || getDefaultDescription(type as NodeType)}
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div className="text-sm font-medium text-gray-800">{label}</div>
-
-      {options && options.length > 0 && (
-        <div className="mt-2">
-          <div className="text-xs text-gray-500 mb-1">Options:</div>
-          <ul className="text-xs text-gray-600 space-y-1">
+        {options && options.length > 0 && (
+          <div className="mt-3 space-y-1">
             {options.map((option, index) => (
-              <li key={index} className="flex items-center gap-1">
-                <span className="w-1 h-1 rounded-full bg-gray-400" />
-                {option}
-              </li>
+              <div key={index} className="text-sm text-gray-600 pl-8">
+                • {option}
+              </div>
             ))}
-          </ul>
-        </div>
-      )}
+          </div>
+        )}
+      </div>
 
       {(type === "greeting" || type === "question") && (
         <Handle
           type="source"
           position={Position.Right}
-          className="w-3 h-3 bg-gray-400 border-2 border-white"
+          className="w-3 h-3 border-2 border-white bg-blue-500"
+          style={{ right: -6 }}
         />
       )}
 
       {(type === "question" ||
+        type === "decision" ||
         type === "knowledge" ||
         type === "external" ||
         type === "transfer") && (
         <Handle
           type="target"
           position={Position.Left}
-          className="w-3 h-3 bg-gray-400 border-2 border-white"
+          className="w-3 h-3 border-2 border-white bg-blue-500"
+          style={{ left: -6 }}
         />
       )}
     </div>
   );
 });
+
+function getDefaultDescription(type: NodeType): string {
+  switch (type) {
+    case "greeting":
+      return "Start your conversation";
+    case "question":
+      return "Ask the customer something";
+    case "decision":
+      return "Create a branch in the flow";
+    case "knowledge":
+      return "Retrieve information";
+    case "external":
+      return "Connect to your systems";
+    case "transfer":
+      return "Hand off to a human agent";
+    default:
+      return "";
+  }
+}

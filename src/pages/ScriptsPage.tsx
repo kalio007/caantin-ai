@@ -1,8 +1,7 @@
 import React from "react";
-import { NavigationBar } from "@/components/layout/NavigationBar";
 import { ScriptHeader } from "@/components/scripts/ScriptHeader";
 import { NodesSidebar } from "@/components/scripts/NodesSidebar";
-import { CustomNodeFlow } from "@/components/nodes/CustomNodeFlow";
+import CustomNodeFlow from "@/components/nodes/CustomNodeFlow";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -37,9 +36,7 @@ export const ScriptsPage = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col">
-      <NavigationBar username="Njavwa" notificationCount={3} />
-
+    <div className="h-full flex flex-col">
       <ScriptHeader
         scriptName="Bank Lead Qualification Flow"
         version="2.3"

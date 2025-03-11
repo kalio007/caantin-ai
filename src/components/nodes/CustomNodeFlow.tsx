@@ -1,103 +1,169 @@
-import React, { useCallback } from "react";
+//
+import React, { useState, useEffect, useCallback } from "react";
+import type { Node, Edge, NodeMouseHandler } from "@xyflow/react";
+import { ZoomSlider } from "@/components/FlowEditor/ZoomSlider";
 import {
   ReactFlow,
-  Background,
-  Controls,
-  MiniMap,
-  Node,
-  Edge,
-  Connection,
   useNodesState,
   useEdgesState,
   addEdge,
-  Panel,
-  NodeTypes,
+  MiniMap,
+  Controls,
+  Position,
+  Background,
 } from "@xyflow/react";
-import { CustomNode } from "./CustomNode";
-import { useSidebarContext } from "@/hooks/use-sidebar";
-import { v4 as uuidv4 } from "uuid";
 
-type NodeData = {
-  label: string;
-  options?: string[];
-  onDelete: () => void;
-};
+import "@xyflow/react/dist/style.css";
+import { useSidebarContext } from "@/hooks/use-sidebar";
+import { CustomNode } from "@/components/nodes/CustomNode";
+import NodePreviewDrawer from "@/components/NodePreview";
+import { initBgColor, defaultViewport, snapGrid } from "../../constants";
 
 const nodeTypes = {
+  default: CustomNode,
+  input: CustomNode,
   greeting: CustomNode,
   question: CustomNode,
-  knowledge: CustomNode,
-  external: CustomNode,
-  transfer: CustomNode,
-} as const;
+  information: CustomNode,
+};
 
-export const CustomNodeFlow = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState<Node<NodeData>>([]);
+const CustomNodeFlow = () => {
+  // from the sidebar context
+  const { createNodes, updateNode, deleteNode } = useSidebarContext();
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
-  const { createNodes, setCreateNodes, deleteNode } = useSidebarContext();
+  const [bgColor, setBgColor] = useState(initBgColor);
 
-  // Handle new node creation from sidebar
-  React.useEffect(() => {
-    if (createNodes.length > 0) {
-      const newNode = createNodes[createNodes.length - 1];
-      const nodePosition = { x: 100, y: nodes.length * 100 + 50 };
+  // State for drawer
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [selectedNode, setSelectedNode] = useState<Node | null>(null);
 
-      const node: Node<NodeData> = {
-        id: newNode.id,
-        type: newNode.type || "default",
-        position: nodePosition,
+  useEffect(() => {
+    setNodes(
+      createNodes.map((node, index) => ({
+        id: node.id,
+        type: node.type || "input",
         data: {
-          label: newNode.data.message || newNode.data.question || "New Node",
-          options: newNode.data.options,
-          onDelete: () => handleDeleteNode(newNode.id),
+          ...(node.type === "question"
+            ? { label: node.data?.question, options: node.data?.options }
+            : { label: node.data?.message }),
+          onDelete: () => handleDeleteNode(node.id),
         },
-      };
+        position: { x: index * 250, y: 50 },
+        sourcePosition:
+          node.type === "greeting"
+            ? Position.Right
+            : node.type === "question"
+            ? Position.Left && Position.Right
+            : undefined,
+        targetPosition:
+          node.type === "question"
+            ? Position.Right
+            : node.type === "information"
+            ? Position.Left
+            : undefined,
+      }))
+    );
 
-      setNodes((nds) => [...nds, node]);
-      setCreateNodes([]);
-    }
-  }, [createNodes, setCreateNodes, nodes.length]);
+    setEdges(
+      createNodes.slice(0, -1).map((node, index) => ({
+        id: `e${node.id}-${createNodes[index + 1].id}`,
+        source: node.id,
+        target: createNodes[index + 1].id,
+        animated: true,
+      }))
+    );
+  }, [createNodes]);
+
+  const onConnect = useCallback(
+    (params) => setEdges((eds) => addEdge({ ...params, animated: true }, eds)),
+    []
+  );
+
+  const onNodeClick: NodeMouseHandler = useCallback(
+    (event, node) => {
+      const target = event.target as HTMLElement;
+      if (
+        target.classList.contains("node-delete-button") ||
+        target.closest(".node-delete-button")
+      ) {
+        return;
+      }
+
+      const originalNode = createNodes.find((n) => n.id === node.id);
+      if (originalNode) {
+        setSelectedNode({ ...node, originalData: originalNode } as Node);
+        setIsDrawerOpen(true);
+      }
+    },
+    [createNodes]
+  );
 
   const handleDeleteNode = useCallback(
     (nodeId: string) => {
-      setNodes((nds) => nds.filter((node) => node.id !== nodeId));
-      setEdges((eds) =>
-        eds.filter((edge) => edge.source !== nodeId && edge.target !== nodeId)
-      );
       deleteNode(nodeId);
+
+      if (selectedNode && selectedNode.id === nodeId) {
+        setIsDrawerOpen(false);
+        setSelectedNode(null);
+      }
     },
-    [setNodes, setEdges, deleteNode]
+    [deleteNode, selectedNode]
   );
 
-  const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges]
+  const handleSaveNode = useCallback(
+    (updatedNode) => {
+      if (updateNode && selectedNode) {
+        updateNode(updatedNode);
+
+        setIsDrawerOpen(false);
+        setSelectedNode(null);
+      }
+    },
+    [selectedNode, updateNode]
   );
 
   return (
-    <div className="h-full w-full bg-gray-50">
+    <div className="w-full h-full">
       <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onNodeClick={onNodeClick}
+        style={{ background: bgColor }}
         nodeTypes={nodeTypes}
+        snapToGrid={true}
+        snapGrid={snapGrid}
+        defaultViewport={defaultViewport}
         fitView
-        className="bg-gray-50"
+        attributionPosition="bottom-left"
       >
-        <Background />
+        <MiniMap
+          nodeStrokeColor={(n) => {
+            if (n.type === "input") return "#0041d0";
+            if (n.type === "selectorNode") return bgColor;
+            return "#ff0072";
+          }}
+          nodeColor={(n) => {
+            if (n.type === "selectorNode") return bgColor;
+            return "#fff";
+          }}
+        />
         <Controls />
-        <MiniMap />
-        <Panel
-          position="top-right"
-          className="bg-white p-2 rounded-lg shadow-lg"
-        >
-          <div className="text-sm text-gray-500">
-            {nodes.length} nodes • {edges.length} connections
-          </div>
-        </Panel>
+        <Background />
+        <ZoomSlider position="top-left" />
       </ReactFlow>
+
+      <NodePreviewDrawer
+        isOpen={isDrawerOpen}
+        setIsOpen={setIsDrawerOpen}
+        node={selectedNode}
+        onSave={handleSaveNode}
+      />
     </div>
   );
 };
+
+export default CustomNodeFlow;
