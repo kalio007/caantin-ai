@@ -26,8 +26,10 @@ const nodeTypes = {
   question: CustomNode,
   information: CustomNode,
 };
-
-const CustomNodeFlow = () => {
+interface CustomNodeFlowProps {
+  onNodeSelect?: (node: Node) => void;
+}
+const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
   // from the sidebar context
   const { createNodes, updateNode, deleteNode } = useSidebarContext();
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
@@ -89,7 +91,10 @@ const CustomNodeFlow = () => {
       ) {
         return;
       }
-
+      if (onNodeSelect && originalNode) {
+        onNodeSelect({ ...node, originalData: originalNode } as Node);
+      }
+      
       const originalNode = createNodes.find((n) => n.id === node.id);
       if (originalNode) {
         setSelectedNode({ ...node, originalData: originalNode } as Node);

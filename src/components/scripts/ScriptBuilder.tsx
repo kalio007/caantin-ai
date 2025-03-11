@@ -9,7 +9,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { useSidebarContext } from "@/hooks/use-sidebar";
 interface ScriptBuilderProps {
   scriptName: string;
@@ -24,7 +24,6 @@ export type SidebarFormType =
   | "transfer";
 
 export const ScriptBuilder = ({ scriptName, version }: ScriptBuilderProps) => {
-  const { toast } = useToast();
   const { setActiveForm } = useSidebarContext();
   const [selectedNode, setSelectedNode] = useState<any>(null);
 
@@ -52,15 +51,13 @@ export const ScriptBuilder = ({ scriptName, version }: ScriptBuilderProps) => {
   };
 
   const handleShare = () => {
-    toast({
-      title: "Share script",
+    toast("Share script", {
       description: "Sharing functionality coming soon.",
     });
   };
 
   const handleSave = () => {
-    toast({
-      title: "Script saved",
+    toast.success("Script saved", {
       description: "Your changes have been saved successfully.",
     });
   };

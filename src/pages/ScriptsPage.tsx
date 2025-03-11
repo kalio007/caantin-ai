@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/resizable";
 import { useSidebarContext } from "@/hooks/use-sidebar";
 import { Toaster, toast } from "sonner";
+import { ScriptBuilder } from "@/components/scripts/ScriptBuilder";
 
 export const ScriptsPage = () => {
   const { setActiveForm } = useSidebarContext();
@@ -46,9 +47,9 @@ export const ScriptsPage = () => {
       />
 
       <div className="flex-1 overflow-hidden">
-        <ResizablePanelGroup direction="horizontal">
+        {/* <ResizablePanelGroup direction="horizontal">
           <ResizablePanel defaultSize={20} minSize={15} maxSize={30}>
-            <NodesSidebar onNodeAdd={handleNodeAdd} />
+            <NodesSidebar />
           </ResizablePanel>
 
           <ResizableHandle />
@@ -56,7 +57,8 @@ export const ScriptsPage = () => {
           <ResizablePanel defaultSize={80}>
             <CustomNodeFlow />
           </ResizablePanel>
-        </ResizablePanelGroup>
+        </ResizablePanelGroup> */}
+        <ScriptBuilder />
       </div>
 
       <Toaster richColors closeButton position="top-right" />

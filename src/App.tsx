@@ -28,7 +28,6 @@ function App() {
               <Route path="/integrations" element={<IntegrationsPage />} />
               <Route path="/" element={<DashboardPage />} />
             </Routes>
-            {/* <CustomNodeFlow /> */}
           </div>
         </Layout>
       </SidebarProvider>

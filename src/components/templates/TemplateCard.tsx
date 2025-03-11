@@ -30,7 +30,7 @@ export const TemplateCard = ({ template, onClick }: TemplateCardProps) => {
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <h3 className="text-base font-medium text-gray-900 truncate">
+            <h3 className="text-sm font-medium text-gray-900 truncate">
               {template.name}
             </h3>
             {template.isNew && (
@@ -39,9 +39,9 @@ export const TemplateCard = ({ template, onClick }: TemplateCardProps) => {
               </span>
             )}
           </div>
-          <p className="text-sm text-gray-500 mt-0.5">{template.description}</p>
+          <p className="text-xs text-gray-500 mt-0.5">{template.description}</p>
           {template.lastEdited && (
-            <p className="text-sm text-gray-400 mt-2">
+            <p className="text-xs text-gray-400 mt-2">
               Last edited: {formatDistanceToNow(template.lastEdited)} ago
             </p>
           )}

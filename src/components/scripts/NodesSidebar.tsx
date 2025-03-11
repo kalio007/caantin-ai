@@ -167,7 +167,7 @@ export const NodesSidebar = () => {
 
         <TabsContent value="nodes" className="flex-1 overflow-auto">
           <div className="space-y-4">
-            <div className="relative">
+            <div className="relative px-1">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
               <Input
                 type="search"
@@ -178,23 +178,25 @@ export const NodesSidebar = () => {
               />
             </div>
 
-            <div className="font-medium text-sm text-gray-500">
+            <div className="font-medium text-sm text-gray-500 px-4">
               CONVERSATION NODES
             </div>
 
             <ScrollArea className="h-[calc(100vh-280px)]">
-              <div className="space-y-2">
+              <div className="space-y-2 px-2">
                 {filteredNodes.map((node) => (
                   <Button
                     key={node.id}
-                    variant="ghost"
-                    className="w-full justify-start p-2 h-auto"
+                    // variant="ghost"
+                    className="w-full justify-start p-2 h-auto border-gray-300 bg-white  rounded-lg hover:bg-gray-200"
                     onClick={() => handleNodeSelect(node)}
                   >
                     <div className="flex items-start space-x-3">
                       <div className="mt-1">{node.icon}</div>
                       <div className="text-left">
-                        <div className="font-medium">{node.label}</div>
+                        <div className="font-medium text-gray-900 text-sm">
+                          {node.label}
+                        </div>
                         <div className="text-xs text-gray-500">
                           {node.description}
                         </div>

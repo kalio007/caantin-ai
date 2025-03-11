@@ -24,10 +24,10 @@ export const TemplatesContainer = ({
   }
 
   return (
-    <div className="p-4 space-y-8">
+    <div className="p-4 space-y-6">
       {groups.map((group) => (
         <div key={group.title}>
-          <h2 className="text-lg font-medium text-gray-600 mb-4">
+          <h2 className="font-medium text-sm text-gray-500 px-4">
             {group.title}
           </h2>
           <div className="space-y-3">
