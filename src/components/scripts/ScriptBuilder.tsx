@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-// import { ScriptHeader } from "./ScriptHeader";
 import { NodesSidebar } from "./NodesSidebar";
 import CustomNodeFlow from "../nodes/CustomNodeFlow";
 import {
@@ -10,10 +9,6 @@ import {
 import { toast } from "sonner";
 import { useSidebarContext } from "@/hooks/use-sidebar";
 import { useSidePanelContext } from "@/layout";
-// import NodePreview from "../nodes/NodePreview";
-import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import SidePanel from "../NodePreview/SidePanel";
 
 export type SidebarFormType =
@@ -36,59 +31,10 @@ export const ScriptBuilder = () => {
       setEditedNode({ ...selectedNode });
     }
   }, [selectedNode]);
-  const handleInputChange = (field: string, value: string) => {
-    if (!editedNode) return;
-
-    if (field === "question" || field === "message") {
-      setEditedNode({
-        ...editedNode,
-        data: {
-          ...editedNode.data,
-          [field]: value,
-        },
-      });
-    } else if (field.startsWith("option_")) {
-      // Handle option changes for question nodes
-      const optionIndex = parseInt(field.split("_")[1]);
-      const newOptions = [...editedNode.data.options];
-      newOptions[optionIndex] = value;
-
-      setEditedNode({
-        ...editedNode,
-        data: {
-          ...editedNode.data,
-          options: newOptions,
-        },
-      });
-    } else {
-      // Handle other fields
-      setEditedNode({
-        ...editedNode,
-        [field]: value,
-      });
-    }
-  };
   const handleNodeSelect = (node: any) => {
     setSelectedNode(node);
     setIsSidePanelOpen(true);
   };
-
-  // const handleNodeUpdate = (nodeId: string, updatedData: any) => {
-  //   // Create a new node object with updated data
-  //   const updatedNode = {
-  //     ...editedNode,
-  //     data: {
-  //       ...editedNode.data,
-  //       ...updatedData,
-  //     },
-  //   };
-
-  //   setEditedNode(updatedNode);
-
-  //   toast.success("Node updated", {
-  //     description: "Node properties have been updated.",
-  //   });
-  // };
 
   const handleSaveNode = useCallback(
     (updatedNode) => {
