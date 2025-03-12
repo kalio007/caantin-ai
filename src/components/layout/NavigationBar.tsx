@@ -31,30 +31,26 @@ export const NavigationBar = ({
   return (
     <nav className="bg-[#2A3990] text-white p-2 md:p-4">
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2 md:space-x-4">
+        <div className="flex items-center space-x-8 md:space-x-6 ">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <div className="bg-white rounded-full p-1">
-              <img
-                src="/logo.svg"
-                alt="Caantin AI"
-                className="h-6 w-6 md:h-8 md:w-8"
-              />
+              <img src="/logo.svg" alt="AI" className="h-6 w-6 md:h-8 md:w-8" />
             </div>
             <span className="text-lg md:text-xl font-semibold">Caantin AI</span>
           </Link>
 
           {/* Navigation Menu */}
-          <NavigationMenu className="hidden md:flex">
-            <NavigationMenuList className="space-x-4">
+          <NavigationMenu className="hidden md:flex ">
+            <NavigationMenuList className="space-x-2">
               <NavigationMenuItem>
                 <Button
                   variant="ghost"
-                  className="text-white hover:text-white/90"
+                  className="text-white hover:text-white/90 hover:bg-blue-600"
                   asChild
                 >
                   <Link to="/dashboard">
-                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                    <LayoutDashboard className="h-4 w-4" />
                     Dashboard
                   </Link>
                 </Button>
@@ -62,11 +58,11 @@ export const NavigationBar = ({
               <NavigationMenuItem>
                 <Button
                   variant="ghost"
-                  className="text-white hover:text-white/90"
+                  className="text-white hover:text-white/90 hover:bg-blue-600"
                   asChild
                 >
                   <Link to="/call-queue">
-                    <Phone className="mr-2 h-4 w-4" />
+                    <Phone className="h-4 w-4" />
                     Call Queue
                   </Link>
                 </Button>
@@ -74,11 +70,11 @@ export const NavigationBar = ({
               <NavigationMenuItem>
                 <Button
                   variant="ghost"
-                  className="text-white hover:text-white/90 bg-blue-600"
+                  className="text-white hover:text-white/90 hover:bg-blue-600"
                   asChild
                 >
                   <Link to="/scripts">
-                    <ScrollText className="mr-2 h-4 w-4" />
+                    <ScrollText className="h-4 w-4" />
                     Scripts
                   </Link>
                 </Button>
@@ -90,7 +86,7 @@ export const NavigationBar = ({
                   asChild
                 >
                   <Link to="/analytics">
-                    <BarChart className="mr-2 h-4 w-4" />
+                    <BarChart className=" h-4 w-4" />
                     Analytics
                   </Link>
                 </Button>
@@ -102,7 +98,7 @@ export const NavigationBar = ({
                   asChild
                 >
                   <Link to="/integrations">
-                    <Grid className="mr-2 h-4 w-4" />
+                    <Grid className=" h-4 w-4" />
                     Integrations
                   </Link>
                 </Button>

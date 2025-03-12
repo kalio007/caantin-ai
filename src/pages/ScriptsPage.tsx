@@ -47,17 +47,6 @@ export const ScriptsPage = () => {
       />
 
       <div className="flex-1 overflow-hidden">
-        {/* <ResizablePanelGroup direction="horizontal">
-          <ResizablePanel defaultSize={20} minSize={15} maxSize={30}>
-            <NodesSidebar />
-          </ResizablePanel>
-
-          <ResizableHandle />
-
-          <ResizablePanel defaultSize={80}>
-            <CustomNodeFlow />
-          </ResizablePanel>
-        </ResizablePanelGroup> */}
         <ScriptBuilder />
       </div>
 
