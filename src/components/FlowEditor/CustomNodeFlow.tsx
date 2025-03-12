@@ -97,6 +97,8 @@ const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
 
   const onNodeClick: NodeMouseHandler = useCallback(
     (event, node) => {
+      console.log("Node clicked:", node);
+
       const target = event.target as HTMLElement;
       if (
         target.classList.contains("node-delete-button") ||
@@ -108,6 +110,7 @@ const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
       const originalNode = createNodes.find((n) => n.id === node.id);
       if (originalNode) {
         const nodeData = { ...node, originalData: originalNode } as Node;
+        console.log("Selected Node:", nodeData);
         setSelectedNode(nodeData);
         setSidePanelOpen(true);
 
@@ -184,15 +187,15 @@ const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
       <SidePanel
         isOpen={sidePanelOpen}
         onClose={handleCloseSidePanel}
-        title={
-          "Hello"
-          // selectedNode?.originalData?.type
-          //   ? `${
-          //       selectedNode.originalData.type.charAt(0).toUpperCase() +
-          //       selectedNode.originalData.type.slice(1)
-          //     } Properties`
-          //   : "Node Properties"
-        }
+        // title={
+        //   "Hello"
+        //   // selectedNode?.originalData?.type
+        //   //   ? `${
+        //   //       selectedNode.originalData.type.charAt(0).toUpperCase() +
+        //   //       selectedNode.originalData.type.slice(1)
+        //   //     } Properties`
+        //   //   : "Node Properties"
+        // }
         node={selectedNode}
         onSave={handleSaveNode}
       />

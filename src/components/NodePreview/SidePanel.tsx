@@ -2,12 +2,13 @@ import React from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { NodePreview } from "@/components/nodes/NodePreview";
+import { NodePreview } from "@/components/NodePreview/NodePreview";
+
 
 interface SidePanelProps {
   isOpen: boolean;
   onClose: () => void;
-  title: string;
+  // title: string;
   node: any;
   onSave: (updatedNode: any) => void;
 }
@@ -15,11 +16,12 @@ interface SidePanelProps {
 const SidePanel: React.FC<SidePanelProps> = ({
   isOpen,
   onClose,
-  title,
+  // title,
   node,
   onSave,
 }) => {
   const [editedNode, setEditedNode] = React.useState<any>(null);
+
 
   React.useEffect(() => {
     if (node) {
@@ -77,7 +79,7 @@ const SidePanel: React.FC<SidePanelProps> = ({
     >
       <div className="flex flex-col h-full">
         <div className="flex items-center justify-between p-4 border-b">
-          <h2 className="text-xl font-semibold">{title}</h2>
+          {/* <h2 className="text-xl font-semibold">{title}</h2> */}
           <Button
             variant="ghost"
             size="icon"

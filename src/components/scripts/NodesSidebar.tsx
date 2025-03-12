@@ -132,9 +132,9 @@ export const NodesSidebar = () => {
     };
 
     // Add the new node to the list
-    setCreateNodes([...createNodes, newNode]);
+    setCreateNodes((prevNodes) => [...prevNodes, newNode]);
+    console.log("this is the newNode array",newNode);
   };
-
   const handleTemplateSelect = (template: Template) => {
     // Handle template selection
     console.log("Selected template:", template);
@@ -187,7 +187,6 @@ export const NodesSidebar = () => {
                 {filteredNodes.map((node) => (
                   <Button
                     key={node.id}
-                    // variant="ghost"
                     className="w-full justify-start p-2 h-auto border-gray-300 bg-white  rounded-lg hover:bg-gray-200"
                     onClick={() => handleNodeSelect(node)}
                   >

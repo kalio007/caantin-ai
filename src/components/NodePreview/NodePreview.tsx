@@ -25,6 +25,7 @@ export const NodePreview = ({
   onAddOption,
   onRemoveOption,
 }: NodePreviewProps) => {
+  console.log("NodePreview received data:", data);
   const renderContent = () => {
     switch (type) {
       case "greeting":

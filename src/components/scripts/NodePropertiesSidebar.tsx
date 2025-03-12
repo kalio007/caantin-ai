@@ -1,5 +1,5 @@
 import React from "react";
-import { NodePreview } from "../nodes/NodePreview";
+import { NodePreview } from "../NodePreview/NodePreview";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
