@@ -94,22 +94,3 @@ export const CustomNode = memo(({ id, data, type }: CustomNodeProps) => {
     </div>
   );
 });
-
-// function getDefaultDescription(type: NodeType): string {
-//   switch (type) {
-//     case "greeting":
-//       return "Start your conversation";
-//     case "question":
-//       return "Ask the customer something";
-//     case "decision":
-//       return "Create a branch in the flow";
-//     case "knowledge":
-//       return "Retrieve information";
-//     case "external":
-//       return "Connect to your systems";
-//     case "transfer":
-//       return "Hand off to a human agent";
-//     default:
-//       return "";
-//   }
-// }

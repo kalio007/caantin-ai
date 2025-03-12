@@ -16,7 +16,6 @@ import {
 import "@xyflow/react/dist/style.css";
 import { useSidebarContext } from "@/hooks/use-sidebar";
 import { CustomNode } from "@/components/nodes/CustomNode";
-// import NodePreviewDrawer from "@/components/NodePreview";
 import { initBgColor, defaultViewport, snapGrid } from "../../constants";
 import { useSidePanelContext } from "@/layout";
 
@@ -70,14 +69,14 @@ const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
       }))
     );
 
-    setEdges(
-      createNodes.slice(0, -1).map((node, index) => ({
-        id: `e${node.id}-${createNodes[index + 1].id}`,
-        source: node.id,
-        target: createNodes[index + 1].id,
-        animated: true,
-      }))
-    );
+    // setEdges(
+    //   createNodes.slice(0, -1).map((node, index) => ({
+    //     id: `e${node.id}-${createNodes[index + 1].id}`,
+    //     source: node.id,
+    //     target: createNodes[index + 1].id,
+    //     animated: true,
+    //   }))
+    // );
   }, [createNodes]);
 
   const onConnect = useCallback(
@@ -118,17 +117,6 @@ const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
     [deleteNode, selectedNode]
   );
 
-  // const handleSaveNode = useCallback(
-  //   (updatedNode) => {
-  //     if (updateNode && selectedNode) {
-  //       updateNode(updatedNode);
-
-  //       setIsDrawerOpen(false);
-  //       setSelectedNode(null);
-  //     }
-  //   },
-  //   [selectedNode, updateNode]
-  // );
 
   return (
     <div className="w-full h-full">
