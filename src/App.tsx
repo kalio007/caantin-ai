@@ -17,9 +17,9 @@ function App() {
       <SidebarProvider>
         <Layout>
           <div className="w-full h-full relative">
-            <div className="absolute top-4 right-4 z-10">
+            {/* <div className="absolute top-4 right-4 z-10">
               <ModeToggle />
-            </div>
+            </div> */}
             <Routes>
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/call-queue" element={<CallQueuePage />} />

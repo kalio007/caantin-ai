@@ -105,11 +105,9 @@ export const NodePreview = ({
   };
 
   return (
-    <Card className="border-none shadow-none">
-      <CardHeader className="">
-        <h2>Edit Node Message</h2>
-      </CardHeader>
-      <CardContent>{renderContent()}</CardContent>
-    </Card>
+    <div className="border-none shadow-none p-4">
+      <h2 className="font-medium text-sm text-gray-500 mb-1">Message Text</h2>
+      <div>{renderContent()}</div>
+    </div>
   );
 };

@@ -139,7 +139,7 @@ export const ScriptBuilder = () => {
           <ResizableHandle withHandle />
 
           <ResizablePanel defaultSize={isSidePanelOpen ? 60 : 80}>
-            <div className="h-full bg-gray-50">
+            <div className="h-full bg-gray-200 p-3">
               <CustomNodeFlow onNodeSelect={handleNodeSelect} />
             </div>
           </ResizablePanel>
@@ -157,7 +157,6 @@ export const ScriptBuilder = () => {
                     onSave={handleSaveNode}
                   />
                 </div>
-                {/* <SidePanel/> */}
               </ResizablePanel>
             </>
           )}

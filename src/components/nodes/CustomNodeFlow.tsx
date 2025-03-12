@@ -162,13 +162,6 @@ const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
         <Background />
         <ZoomSlider position="top-left" />
       </ReactFlow>
-
-      {/* <NodePreviewDrawer
-        isOpen={isDrawerOpen}
-        setIsOpen={setIsDrawerOpen}
-        node={selectedNode}
-        onSave={handleSaveNode}
-      /> */}
     </div>
   );
 };

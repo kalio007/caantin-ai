@@ -78,7 +78,7 @@ const SidePanel: React.FC<SidePanelProps> = ({
           </Button>
         </div>
         <ScrollArea className="h-[calc(100vh-8rem)]">
-          <div className="flex-1 overflow-y-auto p-2">
+          <div className="flex-1 overflow-y-auto">
             <div className="p-4">
               <h3 className="text-lg font-semibold mb-2">
                 {editedNode.type.charAt(0).toUpperCase() +
@@ -87,7 +87,9 @@ const SidePanel: React.FC<SidePanelProps> = ({
               </h3>
 
               <div className="mb-2">
-                <h4 className="text-md text-gray-500 mb-2">Preview</h4>
+                <h2 className="font-medium text-sm text-gray-500 mb-1">
+                  Preview
+                </h2>
                 <div className="border border-blue-200 rounded-lg p-2 bg-blue-50">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="text-blue-500">
@@ -133,12 +135,15 @@ const SidePanel: React.FC<SidePanelProps> = ({
         {/* ensure the save button is at the bottom of screen at all time  */}
         <div className="p-4 border-t sticky bottom-0">
           <div className="flex space-x-2">
-            <Button className="flex-1" onClick={() => onSave(editedNode)}>
-              Save Changes
+            <Button
+              className="flex-1  bg-blue-600"
+              onClick={() => onSave(editedNode)}
+            >
+              Apply Changes
             </Button>
-            <Button variant="outline" onClick={onClose}>
+            {/* <Button variant="outline" onClick={onClose}>
               Cancel
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>

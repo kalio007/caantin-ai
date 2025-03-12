@@ -133,7 +133,7 @@ export const NodesSidebar = () => {
 
     // Add the new node to the list
     setCreateNodes((prevNodes) => [...prevNodes, newNode]);
-    console.log("this is the newNode array",newNode);
+    console.log("this is the newNode array", newNode);
   };
   const handleTemplateSelect = (template: Template) => {
     // Handle template selection
@@ -141,7 +141,7 @@ export const NodesSidebar = () => {
   };
 
   return (
-    <div className="h-full flex flex-col bg-gray-50">
+    <div className="h-full flex flex-col bg-white p-2">
       <Tabs
         defaultValue="nodes"
         value={activeTab}
@@ -187,7 +187,7 @@ export const NodesSidebar = () => {
                 {filteredNodes.map((node) => (
                   <Button
                     key={node.id}
-                    className="w-full justify-start p-2 h-auto border-gray-300 bg-white  rounded-lg hover:bg-gray-200"
+                    className="w-full justify-start p-2 h-auto border border-gray-300 bg-white  rounded-lg hover:bg-gray-200"
                     onClick={() => handleNodeSelect(node)}
                   >
                     <div className="flex items-start space-x-3">

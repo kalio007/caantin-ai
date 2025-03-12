@@ -16,7 +16,7 @@ export const TemplateCard = ({ template, onClick }: TemplateCardProps) => {
   return (
     <button
       onClick={handleClick}
-      className="w-full text-left p-4 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors bg-white group"
+      className="w-full text-left p-4 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors bg-[#FFFFFF] group"
     >
       <div className="flex items-start gap-3">
         <div
