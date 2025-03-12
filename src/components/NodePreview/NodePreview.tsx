@@ -32,13 +32,12 @@ export const NodePreview = ({
         return (
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="message">Message Text</Label>
               <Textarea
                 id="message"
                 value={data.message || ""}
                 onChange={(e) => onUpdate({ message: e.target.value })}
                 placeholder="Enter your greeting message..."
-                className="min-h-[100px]"
+                className="min-h-[80px]"
               />
             </div>
           </div>
@@ -48,13 +47,12 @@ export const NodePreview = ({
         return (
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="question">Question Text</Label>
               <Textarea
                 id="question"
                 value={data.question || ""}
                 onChange={(e) => onUpdate({ question: e.target.value })}
                 placeholder="Enter your question..."
-                className="min-h-[100px]"
+                className="min-h-[80px]"
               />
             </div>
 
@@ -108,10 +106,8 @@ export const NodePreview = ({
 
   return (
     <Card className="border-none shadow-none">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-medium">
-          {type.charAt(0).toUpperCase() + type.slice(1)} Properties
-        </CardTitle>
+      <CardHeader className="">
+        <h2>Edit Node Message</h2>
       </CardHeader>
       <CardContent>{renderContent()}</CardContent>
     </Card>

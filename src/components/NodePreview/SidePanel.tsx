@@ -3,12 +3,11 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { NodePreview } from "@/components/NodePreview/NodePreview";
-
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface SidePanelProps {
   isOpen: boolean;
   onClose: () => void;
-  // title: string;
   node: any;
   onSave: (updatedNode: any) => void;
 }
@@ -16,12 +15,10 @@ interface SidePanelProps {
 const SidePanel: React.FC<SidePanelProps> = ({
   isOpen,
   onClose,
-  // title,
   node,
   onSave,
 }) => {
   const [editedNode, setEditedNode] = React.useState<any>(null);
-
 
   React.useEffect(() => {
     if (node) {
@@ -72,59 +69,69 @@ const SidePanel: React.FC<SidePanelProps> = ({
   };
 
   return (
-    <div
-      className={`fixed right-0 top-0 z-50 h-full w-80 bg-background border-l shadow-lg transform transition-all duration-300 ${
-        isOpen ? "translate-x-0" : "translate-x-full"
-      }`}
-    >
+    <div className="w-full h-full">
       <div className="flex flex-col h-full">
-        <div className="flex items-center justify-between p-4 border-b">
-          {/* <h2 className="text-xl font-semibold">{title}</h2> */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onClose}
-            className="h-8 w-8"
-          >
+        <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          <h2 className="text-lg font-semibold">Properties</h2>
+          <Button variant="ghost" size="sm" onClick={onClose}>
             <X className="h-4 w-4" />
           </Button>
         </div>
+        <ScrollArea className="h-[calc(100vh-8rem)]">
+          <div className="flex-1 overflow-y-auto p-2">
+            <div className="p-4">
+              <h3 className="text-lg font-semibold mb-2">
+                {editedNode.type.charAt(0).toUpperCase() +
+                  editedNode.type.slice(1)}{" "}
+                Node Properties
+              </h3>
 
-        <div className="flex-1 overflow-y-auto p-4">
-          <Card className="mb-4 border-none shadow-none">
-            <CardHeader className="px-0 pt-0">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
-                Node Information
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="px-0 space-y-2">
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <p className="text-xs text-muted-foreground">ID</p>
-                  <p className="text-sm font-medium truncate">
-                    {editedNode.id}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Type</p>
-                  <p className="text-sm font-medium capitalize">
-                    {editedNode.type || "default"}
-                  </p>
+              <div className="mb-2">
+                <h4 className="text-md text-gray-500 mb-2">Preview</h4>
+                <div className="border border-blue-200 rounded-lg p-2 bg-blue-50">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="text-blue-500">
+                      {editedNode.type === "greeting" && "💬"}
+                      {editedNode.type === "question" && "❓"}
+                      {editedNode.type === "information" && "ℹ️"}
+                    </div>
+                    <div className="font-medium">
+                      {editedNode.type.charAt(0).toUpperCase() +
+                        editedNode.type.slice(1)}
+                    </div>
+                  </div>
+                  <div>
+                    {editedNode.type === "question"
+                      ? editedNode.data?.question || "No question text"
+                      : editedNode.data?.message || "No message text"}
+                  </div>
+                  {editedNode.type === "question" &&
+                    editedNode.data?.options && (
+                      <div className="mt-2">
+                        <div className="text-sm text-gray-500">Options:</div>
+                        <ul className="list-disc ml-5">
+                          {editedNode.data.options.map(
+                            (option: string, i: number) => (
+                              <li key={i}>{option}</li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    )}
                 </div>
               </div>
-            </CardContent>
-          </Card>
-
-          <NodePreview
-            type={editedNode.type}
-            data={editedNode.data}
-            onUpdate={handleUpdate}
-            onAddOption={handleAddOption}
-            onRemoveOption={handleRemoveOption}
-          />
-        </div>
-
-        <div className="p-4 border-t">
+            </div>
+            <NodePreview
+              type={editedNode.type}
+              data={editedNode.data}
+              onUpdate={handleUpdate}
+              onAddOption={handleAddOption}
+              onRemoveOption={handleRemoveOption}
+            />
+          </div>
+        </ScrollArea>
+        {/* ensure the save button is at the bottom of screen at all time  */}
+        <div className="p-4 border-t sticky bottom-0">
           <div className="flex space-x-2">
             <Button className="flex-1" onClick={() => onSave(editedNode)}>
               Save Changes

@@ -97,29 +97,15 @@ export const ScriptBuilder = () => {
 
         // setIsDrawerOpen(false);
         setSelectedNode(null);
+        setIsSidePanelOpen(false);
+
+        toast.success("Node updated", {
+          description: "Node properties have been",
+        });
       }
     },
     [selectedNode, updateNode]
   );
-
-  // const handleSaveChanges = useCallback(() => {
-  //   if (selectedNode && editedNode) {
-  //     if (!updateNode) {
-  //       console.error("updateNode function is not available.");
-  //       toast.error("Error", { description: "Failed to update the node." });
-  //       return;
-  //     }
-
-  //     updateNode(editedNode); // Update node properly
-
-  //     // Instead of resetting selectedNode, update it with the saved state
-  //     setSelectedNode(editedNode);
-
-  //     toast.success("Changes saved", {
-  //       description: "Node properties have been successfully updated.",
-  //     });
-  //   }
-  // }, [selectedNode, editedNode, updateNode]);
 
   const handleTest = () => {
     toast.success("Test mode activated", {
@@ -164,68 +150,6 @@ export const ScriptBuilder = () => {
 
               <ResizablePanel defaultSize={20}>
                 <div className="h-full border-l border-gray-200 bg-white">
-                  <div className="flex items-center justify-between p-4 border-b border-gray-200">
-                    <h2 className="text-lg font-semibold">Properties</h2>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleClosePanel}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div>
-
-                  {/* {selectedNode && editedNode && (
-                    <ScrollArea className="h-[calc(100vh-8rem)]">
-                      <div className="p-4">
-                        <h3 className="text-xl font-semibold mb-4">
-                          {editedNode.type.charAt(0).toUpperCase() +
-                            editedNode.type.slice(1)}{" "}
-                          Node Properties
-                        </h3>
-
-                        <div className="mb-6">
-                          <h4 className="text-md text-gray-500 mb-2">
-                            Preview
-                          </h4>
-                          <div className="border border-blue-200 rounded-lg p-4 bg-blue-50">
-                            <div className="flex items-center gap-2 mb-2">
-                              <div className="text-blue-500">
-                                {editedNode.type === "greeting" && "💬"}
-                                {editedNode.type === "question" && "❓"}
-                                {editedNode.type === "information" && "ℹ️"}
-                              </div>
-                              <div className="font-medium">
-                                {editedNode.type.charAt(0).toUpperCase() +
-                                  editedNode.type.slice(1)}
-                              </div>
-                            </div>
-                            <div>
-                              {editedNode.type === "question"
-                                ? editedNode.data?.question ||
-                                  "No question text"
-                                : editedNode.data?.message || "No message text"}
-                            </div>
-                            {editedNode.type === "question" &&
-                              editedNode.data?.options && (
-                                <div className="mt-2">
-                                  <div className="text-sm text-gray-500">
-                                    Options:
-                                  </div>
-                                  <ul className="list-disc ml-5">
-                                    {editedNode.data.options.map(
-                                      (option: string, i: number) => (
-                                        <li key={i}>{option}</li>
-                                      )
-                                    )}
-                                  </ul>
-                                </div>
-                              )}
-                          </div>
-                        </div>
-                      </div>
-                    </ScrollArea>
-                  )} */}
                   <SidePanel
                     isOpen={isSidePanelOpen}
                     onClose={handleClosePanel}
