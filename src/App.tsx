@@ -9,7 +9,7 @@ import DashboardPage from "@/pages/DashboardPage";
 import CallQueuePage from "@/pages/CallQueuePage";
 import AnalyticsPage from "@/pages/AnalyticsPage";
 import IntegrationsPage from "@/pages/IntegrationsPage";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 function App() {
   return (
@@ -26,7 +26,8 @@ function App() {
               <Route path="/scripts" element={<ScriptsPage />} />
               <Route path="/analytics" element={<AnalyticsPage />} />
               <Route path="/integrations" element={<IntegrationsPage />} />
-              <Route path="/" element={<DashboardPage />} />
+              <Route path="/" element={<Navigate to="/scripts" replace />} />
+              <Route path="*" element={<Navigate to="/scripts" replace />} />
             </Routes>
           </div>
         </Layout>
