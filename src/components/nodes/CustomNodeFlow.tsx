@@ -1,4 +1,4 @@
-//src/components/FlowEditor/CustomNodeFlow.tsx
+//src/components/nodes/CustomNodeFlow.tsx
 import React, { useState, useEffect, useCallback } from "react";
 import type { Node, Edge, NodeMouseHandler } from "@xyflow/react";
 import { ZoomSlider } from "@/components/FlowEditor/ZoomSlider";
@@ -16,15 +16,9 @@ import {
 import "@xyflow/react/dist/style.css";
 import { useSidebarContext } from "@/hooks/use-sidebar";
 import { CustomNode } from "@/components/nodes/CustomNode";
-import SidePanel from "../NodePreview/SidePanel";
-// import ColorSelectorNode from "@/components/FlowEditor/ColorSelectorNode";
 // import NodePreviewDrawer from "@/components/NodePreview";
 import { initBgColor, defaultViewport, snapGrid } from "../../constants";
 import { useSidePanelContext } from "@/layout";
-
-interface CustomNodeFlowProps {
-  onNodeSelect?: (node: Node) => void;
-}
 
 const nodeTypes = {
   default: CustomNode,
@@ -33,7 +27,9 @@ const nodeTypes = {
   question: CustomNode,
   information: CustomNode,
 };
-
+interface CustomNodeFlowProps {
+  onNodeSelect?: (node: Node) => void;
+}
 const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
   // from the sidebar context
   const { createNodes, updateNode, deleteNode } = useSidebarContext();
@@ -41,17 +37,11 @@ const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [bgColor, setBgColor] = useState(initBgColor);
 
-  // Get layout context for side panel
-  const { setIsSidePanelOpen } = useSidePanelContext();
-
-  // State for side panel content
-  const [sidePanelOpen, setSidePanelOpen] = useState(false);
+  // State for drawer
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
 
-  // Update the layout context whenever our local state changes
-  useEffect(() => {
-    setIsSidePanelOpen(sidePanelOpen);
-  }, [sidePanelOpen, setIsSidePanelOpen]);
+  const { setIsSidePanelOpen } = useSidePanelContext();
 
   useEffect(() => {
     setNodes(
@@ -80,14 +70,14 @@ const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
       }))
     );
 
-    // setEdges(
-    //   createNodes.slice(0, -1).map((node, index) => ({
-    //     id: `e${node.id}-${createNodes[index + 1].id}`,
-    //     source: node.id,
-    //     target: createNodes[index + 1].id,
-    //     animated: true,
-    //   }))
-    // );
+    setEdges(
+      createNodes.slice(0, -1).map((node, index) => ({
+        id: `e${node.id}-${createNodes[index + 1].id}`,
+        source: node.id,
+        target: createNodes[index + 1].id,
+        animated: true,
+      }))
+    );
   }, [createNodes]);
 
   const onConnect = useCallback(
@@ -97,8 +87,6 @@ const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
 
   const onNodeClick: NodeMouseHandler = useCallback(
     (event, node) => {
-      console.log("Node clicked:", node);
-
       const target = event.target as HTMLElement;
       if (
         target.classList.contains("node-delete-button") ||
@@ -109,50 +97,41 @@ const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
 
       const originalNode = createNodes.find((n) => n.id === node.id);
       if (originalNode) {
-        const nodeData = { ...node, originalData: originalNode } as Node;
-        console.log("Selected Node:", nodeData);
-        setSelectedNode(nodeData);
-        setSidePanelOpen(true);
-
-        // Call the onNodeSelect callback if provided
         if (onNodeSelect) {
-          onNodeSelect(nodeData);
+          onNodeSelect({ ...node, originalData: originalNode } as Node);
         }
+        setIsSidePanelOpen(true);
       }
     },
-    [createNodes, onNodeSelect]
+    [createNodes, onNodeSelect, setIsSidePanelOpen]
   );
+
   const handleDeleteNode = useCallback(
     (nodeId: string) => {
       deleteNode(nodeId);
 
       if (selectedNode && selectedNode.id === nodeId) {
-        setSidePanelOpen(false);
+        setIsDrawerOpen(false);
         setSelectedNode(null);
       }
     },
     [deleteNode, selectedNode]
   );
 
-  const handleSaveNode = useCallback(
-    (updatedNode) => {
-      if (updateNode && selectedNode) {
-        updateNode(updatedNode);
+  // const handleSaveNode = useCallback(
+  //   (updatedNode) => {
+  //     if (updateNode && selectedNode) {
+  //       updateNode(updatedNode);
 
-        setSidePanelOpen(false);
-        setSelectedNode(null);
-      }
-    },
-    [selectedNode, updateNode]
-  );
-
-  const handleCloseSidePanel = () => {
-    setSidePanelOpen(false);
-    setSelectedNode(null);
-  };
+  //       setIsDrawerOpen(false);
+  //       setSelectedNode(null);
+  //     }
+  //   },
+  //   [selectedNode, updateNode]
+  // );
 
   return (
-    <div className="w-full h-full relative">
+    <div className="w-full h-full">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -183,22 +162,6 @@ const CustomNodeFlow = ({ onNodeSelect }: CustomNodeFlowProps) => {
         <Background />
         <ZoomSlider position="top-left" />
       </ReactFlow>
-
-      <SidePanel
-        isOpen={sidePanelOpen}
-        onClose={handleCloseSidePanel}
-        // title={
-        //   "Hello"
-        //   // selectedNode?.originalData?.type
-        //   //   ? `${
-        //   //       selectedNode.originalData.type.charAt(0).toUpperCase() +
-        //   //       selectedNode.originalData.type.slice(1)
-        //   //     } Properties`
-        //   //   : "Node Properties"
-        // }
-        node={selectedNode}
-        onSave={handleSaveNode}
-      />
     </div>
   );
 };

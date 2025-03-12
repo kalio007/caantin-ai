@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
+import { NodeType } from "@/types/nodes";
 
 // Define the types for our context
 export type SidebarFormType = "greeting" | "question" | "information" | null;
@@ -24,8 +25,8 @@ interface Node {
 }
 
 interface SidebarContextType {
-  activeForm: SidebarFormType;
-  setActiveForm: (form: SidebarFormType) => void;
+  activeForm: NodeType | null;
+  setActiveForm: (form: NodeType | null) => void;
   createNodes: CreateNode[];
   setCreateNodes: (
     nodes: CreateNode[] | ((prev: CreateNode[]) => CreateNode[])
@@ -46,7 +47,7 @@ const SidebarContext = createContext<SidebarContextType>({
 export const SidebarProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [activeForm, setActiveForm] = useState<SidebarFormType>(null);
+  const [activeForm, setActiveForm] = useState<NodeType | null>(null);
   const [createNodes, setCreateNodes] = useState<CreateNode[]>([]);
 
   const updateNode = (updatedNode: CreateNode) => {
@@ -59,7 +60,7 @@ export const SidebarProvider: React.FC<{ children: ReactNode }> = ({
     setCreateNodes((prevNodes) => {
       const nodeIndex = prevNodes.findIndex((node) => node.id === nodeId);
 
-      if (nodeIndex === -1) return prevNodes; 
+      if (nodeIndex === -1) return prevNodes;
 
       const newNodes = [...prevNodes];
       newNodes.splice(nodeIndex, 1);
